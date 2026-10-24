@@ -3,6 +3,8 @@ import cors from "cors";
 import helmet from "helmet";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
+import path from "path";
+import fs from "fs";
 import { rateLimit } from "express-rate-limit";
 import routes from "./routes";
 import { errorHandler } from "./middleware/errorHandler";
@@ -75,7 +77,17 @@ app.get("/api/health", async (_req, res) => {
 // 6. Mount V1 Application Routes
 app.use("/api/v1", routes);
 
-// 7. Centralized Error Handling Middleware
+// 7. Serve Static Frontend in Production
+const clientDist = path.resolve(__dirname, "../../client/dist");
+if (fs.existsSync(clientDist)) {
+  app.use(express.static(clientDist));
+  app.get("*", (req, res, next) => {
+    if (req.path.startsWith("/api")) return next();
+    res.sendFile(path.join(clientDist, "index.html"));
+  });
+}
+
+// 8. Centralized Error Handling Middleware
 app.use(errorHandler);
 
 // 8. Server Initialization
