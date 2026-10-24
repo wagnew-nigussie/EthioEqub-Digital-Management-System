@@ -1,0 +1,26 @@
+services:
+  # 1. Full-Stack Web Application (Node.js API + React Static Frontend)
+  - type: web
+    name: ethioequb-app
+    env: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm run start --workspace=server
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true
+      - key: COOKIE_SECRET
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: ethioequb-postgres
+          property: connectionString
+
+databases:
+  # 2. Managed PostgreSQL Database
+  - name: ethioequb-postgres
+    plan: free
+    databaseName: ethioequb_db
+    user: ethioequb_user
