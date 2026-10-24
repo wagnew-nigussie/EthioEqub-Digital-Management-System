@@ -80,7 +80,7 @@ app.use(errorHandler);
 
 // 8. Server Initialization
 if (process.env.NODE_ENV !== "test") {
-  app.listen(PORT, () => {
+  app.listen(Number(PORT), "0.0.0.0", () => {
     console.log(`[EthioEqub Server] Running on http://localhost:${PORT}`);
     console.log(`[EthioEqub Server] Environment: ${process.env.NODE_ENV || "development"}`);
   });
