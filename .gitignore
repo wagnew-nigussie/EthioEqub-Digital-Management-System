@@ -39,3 +39,7 @@ postgres_data/
 # Prisma
 server/prisma/*.db
 server/prisma/*.db-journal
+
+# Nested clone
+EthioEqub-Digital-Management-System/
+
