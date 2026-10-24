@@ -9,6 +9,7 @@ import { rateLimit } from "express-rate-limit";
 import routes from "./routes";
 import { errorHandler } from "./middleware/errorHandler";
 import { prisma } from "./config/db";
+import { seedIfEmpty } from "./services/seedService";
 
 dotenv.config();
 
@@ -17,10 +18,15 @@ const PORT = process.env.PORT || 5000;
 const CLIENT_URL = process.env.CLIENT_URL || "http://localhost:5173";
 
 // 1. Security Headers & CORS
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+    crossOriginEmbedderPolicy: false,
+  })
+);
 app.use(
   cors({
-    origin: CLIENT_URL,
+    origin: (origin, callback) => callback(null, true),
     credentials: true,
   })
 );
@@ -92,9 +98,14 @@ app.use(errorHandler);
 
 // 8. Server Initialization
 if (process.env.NODE_ENV !== "test") {
-  app.listen(Number(PORT), "0.0.0.0", () => {
+  app.listen(Number(PORT), "0.0.0.0", async () => {
     console.log(`[EthioEqub Server] Running on http://localhost:${PORT}`);
     console.log(`[EthioEqub Server] Environment: ${process.env.NODE_ENV || "development"}`);
+    try {
+      await seedIfEmpty(false);
+    } catch (e) {
+      console.warn("[EthioEqub Server] DB auto-seed note:", e);
+    }
   });
 }
 
