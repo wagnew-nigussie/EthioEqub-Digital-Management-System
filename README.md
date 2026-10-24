@@ -1,14 +1,33 @@
 # EthioEqub Digital Management System (ዕቁብ)
 
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.5-blue.svg)](https://www.typescriptlang.org/)
-[![React](https://img.shields.io/badge/React-18.3-61dafb.svg)](https://reactjs.org/)
-[![Node.js](https://img.shields.io/badge/Node.js-20.x_LTS-green.svg)](https://nodejs.org/)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-17.x-336791.svg)](https://www.postgresql.org/)
-[![Prisma](https://img.shields.io/badge/Prisma-5.22-2D3748.svg)](https://www.prisma.io/)
-[![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-3.4-38bdf8.svg)](https://tailwindcss.com/)
-[![Tests](https://img.shields.io/badge/Vitest-10%20Passed-brightgreen.svg)]()
+[![Live Demo](https://img.shields.io/badge/🌐%20Live%20Demo-ethioequb--digital--management--system.onrender.com-00C781?style=for-the-badge&logo=render&logoColor=white)](https://ethioequb-digital-management-system.onrender.com)
+[![Status](https://img.shields.io/badge/Render-Live%20%26%20Healthy-success?style=for-the-badge&logo=render&logoColor=white)](https://ethioequb-digital-management-system.onrender.com/api/health)
+[![Author](https://img.shields.io/badge/Architect%20%26%20Lead-Wagnew%20Nigussie-orange?style=for-the-badge&logo=github)](https://github.com/wagnew-nigussie)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.5-blue?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/React-18.3-61dafb?style=for-the-badge&logo=react&logoColor=black)](https://reactjs.org/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-17.x-336791?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 
-> A professional, secure, full-stack digital management platform modernizing traditional Ethiopian **Rotating Savings and Credit Associations (ROSCA / ዕቁብ)**.
+---
+
+### 🚀 Public Live Deployment
+
+The system is fully deployed in the cloud and open for public testing:
+
+> 🌐 **Live Web Application:** **[https://ethioequb-digital-management-system.onrender.com](https://ethioequb-digital-management-system.onrender.com)**  
+> 🏥 **Live Health Endpoint:** **[https://ethioequb-digital-management-system.onrender.com/api/health](https://ethioequb-digital-management-system.onrender.com/api/health)**
+
+#### 🔑 Instant One-Click Demo Credentials
+You can explore the live system immediately using any of these pre-seeded accounts:
+
+| Role in Bole Equb | Full Name | Email Address | Password | Permissions & Capabilities |
+|:---|:---|:---|:---|:---|
+| **Group Owner** | **Wagnew Nigussie** | `wagnewnigussie569@gmail.com` | `password123` | Full ownership, group management, cycle scheduling |
+| **Group Treasurer** | **Tigist Haile** | `tigist@gmail.com` | `password123` | Record contributions, receipts, dual-control payout authorization (Approver 1) |
+| **Member** | **Chala Tadesse** | `chala@gmail.com` | `password123` | View personal payment history, cycles, and lottery draw rank |
+| **Member** | **Marta Bekele** | `marta@gmail.com` | `password123` | Active member; cycle 3 payment pending |
+| **Platform Admin** | **System Admin** | `admin@ethioequb.com` | `password123` | Complete platform oversight, security audit log inspector |
+
+*Note: The login page includes quick-fill buttons to sign in with any demo user in 1 click!*
 
 ---
 
@@ -19,10 +38,11 @@ Traditional Equb associations in Ethiopia pool hundreds of millions of Birr annu
 **EthioEqub** digitizes and governs Equb operations end-to-end:
 - **Zero IEEE-754 Precision Loss:** All financial calculations strictly executed as 64-bit integer minor units (santim / cents). 1 Birr = 100 santim.
 - **Ledger Immutability (Zero In-Place Deletions):** Corrections are recorded exclusively through signed differential adjustment rows (`Adjustment`) linked to the parent transaction.
-- **Dual-Control Payout Governance:** Disbursing pooled funds requires independent authorization from two distinct accounts (`Approver 1 != Approver 2`), with configurable single-approval for small family circles (&lt; 5 members).
+- **Dual-Control Payout Governance:** Disbursing pooled funds requires independent authorization from two distinct accounts (`Approver 1 != Approver 2`), with configurable single-approval for small family circles (< 5 members).
 - **Duplicate Reference Prevention:** Unique composite database constraints block accidental duplicate receipt submissions on Telebirr, CBE Birr, and Bank transfers.
 - **Tamper-Evident Audit Trail:** Every mutating action captures actor identity, timestamp, IP address, and JSON state diffs.
 - **Exportable Ledgers:** Sanitized CSV transaction ledgers protected against formula-injection attacks.
+- **Ethiopian Context Aware:** Features live Addis Ababa time ticker, Ethiopian calendar indicators (*Tikimt 2017*), printable digital receipts, and Ethiopian Civil Code Articles 3040–3052 reference baseline.
 
 ---
 
@@ -30,32 +50,32 @@ Traditional Equb associations in Ethiopia pool hundreds of millions of Birr annu
 
 ```text
 EthioEqub Digital Management System/
-├── client/                     # Frontend Single Page Application
+├── client/                     # Modern React 18 SPA (Vite + TailwindCSS)
 │   ├── src/
-│   │   ├── components/common/  # Navbar, Sidebar, Layout shells
-│   │   ├── context/            # AuthContext (session hydration)
+│   │   ├── components/common/  # Navbar, Sidebar, Right Action Rail, Modals, Footer
+│   │   ├── context/            # AuthContext, UIContext (Universal Search, Receipts)
 │   │   ├── pages/              # Dashboard, Groups, Contributions, Payouts, Reports, Audit
-│   │   ├── services/           # Typed apiRequest client with cookie credentials
+│   │   ├── services/           # Typed API Client with session credentials
 │   │   └── main.tsx            # App router & entry point
 │   ├── index.html
-│   ├── vite.config.ts          # Vite bundler configuration & /api proxy
-│   └── tailwind.config.js      # Custom theme styling
+│   ├── vite.config.ts          # Bundler & proxy configuration
+│   └── tailwind.config.js      # Styling design system
 │
-├── server/                     # Backend REST API Server
+├── server/                     # Backend REST API Server (Node.js + Express)
 │   ├── prisma/
 │   │   ├── schema.prisma       # 10 Relational entities matching PRTDD specification
-│   │   └── seed.ts             # Realistic Ethiopian Equb seeder script
+│   │   └── seed.ts             # Seeder script
 │   ├── src/
-│   │   ├── config/             # Database connection singleton
+│   │   ├── config/             # PostgreSQL database connection singleton
 │   │   ├── controllers/        # Auth, Group, Contribution, Payout, and Audit controllers
 │   │   ├── middleware/         # Auth, RBAC group guards, error handler, rate limiter
 │   │   ├── routes/             # REST endpoints mounted at /api/v1/*
-│   │   ├── services/           # Group, Contribution, Payout, Report, and Audit business logic
+│   │   ├── services/           # Business logic & seedService (auto-seeds cloud on boot)
 │   │   └── utils/              # Standardized AppError hierarchy
 │   ├── tests/                  # Vitest unit & integration test suite (100% passing)
 │   └── tsconfig.json
 │
-├── shared/                     # Shared TypeScript Library
+├── shared/                     # Shared TypeScript Library (@ethioequb/shared)
 │   ├── src/index.ts            # Domain enums, financial math utils, and Zod DTO schemas
 │   └── tsconfig.json
 │
@@ -63,34 +83,14 @@ EthioEqub Digital Management System/
 │   ├── EthioEqub_Digital_Management_System_PRTDD.pdf  # 50-Page Print-Ready PDF
 │   └── EthioEqub_Digital_Management_System_PRTDD.html # Document HTML Source
 │
-├── scripts/                    # Development & Diagnostic Scripts
-│   ├── verify_prerequisites.sh # Safe read-only system diagnostic tool
-│   ├── start_postgres.sh       # Starts local PostgreSQL daemon on /tmp port 5436
-│   └── start_dev.sh            # One-click launcher for server and client
-│
+├── render.yaml                 # Infrastructure-as-Code Blueprint for Render cloud
 ├── docker-compose.yml          # Container configuration for external PostgreSQL deployment
 └── package.json                # Monorepo workspaces coordinator
 ```
 
 ---
 
-## 3. Seeded Demo Accounts
-
-The database is pre-populated with authentic demonstration accounts. All accounts share the password: `password123`.
-
-| Full Name | Role in Bole Equb | Email Address | Description |
-|---|---|---|---|
-| **Wagnew Nigussie** | Group Owner | `wagnewnigussie569@gmail.com` | Organizer of Bole Merchants Equb. Full administrative permissions. |
-| **Tigist Haile** | Group Treasurer | `tigist@gmail.com` | Records contributions, executes adjustments, authorizes payouts (Approver 1). |
-| **Chala Tadesse** | Member | `chala@gmail.com` | Active member; paid Cycle 1, 2, and 3 via CBE Birr. |
-| **Marta Bekele** | Member | `marta@gmail.com` | Active member; paid Cycle 1 & 2; Cycle 3 contribution pending. |
-| **System Admin** | Platform Admin | `admin@ethioequb.com` | Platform oversight and full audit log explorer. |
-
-*Quick Access: The login page includes one-click buttons to sign in as any demo user instantly.*
-
----
-
-## 4. Quick Start & Execution Guide
+## 3. Local Quick Start & Execution Guide
 
 ### 1. Start the PostgreSQL Database
 ```bash
@@ -116,7 +116,27 @@ npm test
 ```bash
 npm run build
 ```
-*Compiles `@ethioequb/shared`, bundles backend `server`, and generates optimized production assets in `client/dist/`.*
+*Compiles `@ethioequb/shared`, builds backend `server`, and generates optimized production assets in `client/dist/`.*
+
+---
+
+## 4. Cloud Deployment Architecture
+
+The application is deployed on **Render** as a unified full-stack web service backed by a managed **PostgreSQL 17** database:
+
+```mermaid
+flowchart TD
+    User["🌐 End User (Browser / Mobile)"] -->|HTTPS| Render["☁️ Render Cloud Web Service (Node 20 LTS)"]
+    subgraph Render["Render Web Service (ethioequb-app)"]
+        SPA["React 18 SPA (client/dist)"]
+        API["Express API Server (/api/v1/*)"]
+    end
+    API -->|TCP / SSL| PG[("🐘 Managed PostgreSQL 17 Database")]
+```
+
+- **Zero-Config Auto-Migration:** On container boot, `prisma db push` syncs all tables automatically.
+- **Auto-Seeding:** If the cloud database is blank, `seedService` provisions authentic demo data without requiring shell access.
+- **Single-Port Architecture:** Express statically hosts `client/dist/` in production and routes `/api/*` requests internally, eliminating cross-origin CORS latency.
 
 ---
 
@@ -130,7 +150,7 @@ npm run build
 
 ---
 
-## 6. Project Documentation
+## 6. Official Documentation
 
 The complete **Project Requirements and Technical Design Document (PRTDD v1.1)** is available at:
 - **PDF File:** [`docs/EthioEqub_Digital_Management_System_PRTDD.pdf`](./docs/EthioEqub_Digital_Management_System_PRTDD.pdf)
@@ -140,7 +160,8 @@ The complete **Project Requirements and Technical Design Document (PRTDD v1.1)**
 
 ## 7. Author & Project Ownership
 
-- **Lead Software Engineer & Author:** Wagnew Nigussie
+- **Lead Software Engineer & System Architect:** Wagnew Nigussie
 - **Email:** `wagnewnigussie569@gmail.com`
-- **Project Repository:** EthioEqub Digital Management System
-
+- **GitHub Profile:** [@wagnew-nigussie](https://github.com/wagnew-nigussie)
+- **Project Repository:** [EthioEqub-Digital-Management-System](https://github.com/wagnew-nigussie/EthioEqub-Digital-Management-System)
+- **Live Demo:** [https://ethioequb-digital-management-system.onrender.com](https://ethioequb-digital-management-system.onrender.com)
