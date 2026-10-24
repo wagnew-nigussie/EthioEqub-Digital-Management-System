@@ -42,7 +42,7 @@ export class GroupService {
     const contributionAmountMinor = BigInt(toMinorUnits(input.contributionAmountETB));
     const cycleSchedules = calculateCycleSchedule(input.startDate, input.totalCycles, input.frequency);
 
-    return await prisma.$transaction(async (tx) => {
+    return await prisma.$transaction(async (tx: any) => {
       // 1. Create Equb Group
       const group = await tx.equbGroup.create({
         data: {
@@ -126,7 +126,7 @@ export class GroupService {
       throw new BusinessRuleViolationError(`Group membership is full (maximum ${group.totalCycles} members)`);
     }
 
-    return await prisma.$transaction(async (tx) => {
+    return await prisma.$transaction(async (tx: any) => {
       const membership = await tx.membership.create({
         data: {
           userId: input.userId,
@@ -199,7 +199,7 @@ export class GroupService {
       }
     }
 
-    const currentCycle = group.cycles.find((c) => c.status === CycleStatus.OPEN) || group.cycles[0];
+    const currentCycle = group.cycles.find((c: any) => c.status === CycleStatus.OPEN) || group.cycles[0];
 
     return {
       group,

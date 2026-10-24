@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
 import helmet from "helmet";
 import cookieParser from "cookie-parser";
@@ -36,7 +36,7 @@ app.use(cookieParser());
 app.use(express.json({ limit: "1mb" }));
 
 // 3. Request Correlation ID
-app.use((req, res, next) => {
+app.use((req: Request, res: Response, next: NextFunction) => {
   const reqId = (req.headers["x-request-id"] as string) || `req_${Math.random().toString(36).substring(2, 9)}`;
   req.headers["x-request-id"] = reqId;
   res.setHeader("X-Request-Id", reqId);
@@ -60,7 +60,7 @@ const generalLimiter = rateLimit({
 app.use("/api/", generalLimiter);
 
 // 5. System Health Check
-app.get("/api/health", async (_req, res) => {
+app.get("/api/health", async (_req: Request, res: Response) => {
   try {
     // Ping PostgreSQL
     await prisma.$queryRaw`SELECT 1`;
@@ -87,7 +87,7 @@ app.use("/api/v1", routes);
 const clientDist = path.resolve(__dirname, "../../client/dist");
 if (fs.existsSync(clientDist)) {
   app.use(express.static(clientDist));
-  app.get("*", (req, res, next) => {
+  app.get("*", (req: Request, res: Response, next: NextFunction) => {
     if (req.path.startsWith("/api")) return next();
     res.sendFile(path.join(clientDist, "index.html"));
   });

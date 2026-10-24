@@ -42,7 +42,7 @@ export class PayoutService {
     const isSmallGroup = group.memberships.length < 5;
     const allowsSingleApproval = isSmallGroup && group.allowSingleApproverIfSmall;
 
-    return await prisma.$transaction(async (tx) => {
+    return await prisma.$transaction(async (tx: any) => {
       // CASE 1: Single Approval Permitted for Small Groups (< 5 members)
       if (allowsSingleApproval && payout.status === PayoutStatus.SCHEDULED) {
         const disbursedPayout = await tx.payout.update({

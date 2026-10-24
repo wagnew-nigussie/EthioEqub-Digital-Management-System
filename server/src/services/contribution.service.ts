@@ -70,7 +70,7 @@ export class ContributionService {
     }
 
     // 3. Atomic Database Write & Audit Logging (BR-006, BR-012)
-    return await prisma.$transaction(async (tx) => {
+    return await prisma.$transaction(async (tx: any) => {
       const contribution = await tx.contribution.create({
         data: {
           membershipId: input.membershipId,
@@ -127,7 +127,7 @@ export class ContributionService {
       throw new BusinessRuleViolationError("Cannot adjust records of an inactive Equb group");
     }
 
-    return await prisma.$transaction(async (tx) => {
+    return await prisma.$transaction(async (tx: any) => {
       const adjustment = await tx.adjustment.create({
         data: {
           contributionId: input.contributionId,
@@ -185,7 +185,7 @@ export class ContributionService {
 
     const expectedPerCycle = membership.group.contributionAmount;
     const pastAndCurrentCycles = membership.group.cycles.filter(
-      (c) => c.status === "OPEN" || c.status === "RECONCILED" || c.status === "CLOSED"
+      (c: any) => c.status === "OPEN" || c.status === "RECONCILED" || c.status === "CLOSED"
     );
 
     const totalExpectedSoFar = BigInt(pastAndCurrentCycles.length) * expectedPerCycle;
