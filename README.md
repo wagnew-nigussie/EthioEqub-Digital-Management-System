@@ -80,7 +80,7 @@ The database is pre-populated with authentic demonstration accounts. All account
 
 | Full Name | Role in Bole Equb | Email Address | Description |
 |---|---|---|---|
-| **Abebe Kebede** | Group Owner | `abebe@gmail.com` | Organizer of Bole Merchants Equb. Full administrative permissions. |
+| **Wagnew Nigussie** | Group Owner | `wagnewnigussie569@gmail.com` | Organizer of Bole Merchants Equb. Full administrative permissions. |
 | **Tigist Haile** | Group Treasurer | `tigist@gmail.com` | Records contributions, executes adjustments, authorizes payouts (Approver 1). |
 | **Chala Tadesse** | Member | `chala@gmail.com` | Active member; paid Cycle 1, 2, and 3 via CBE Birr. |
 | **Marta Bekele** | Member | `marta@gmail.com` | Active member; paid Cycle 1 & 2; Cycle 3 contribution pending. |
@@ -135,3 +135,12 @@ npm run build
 The complete **Project Requirements and Technical Design Document (PRTDD v1.1)** is available at:
 - **PDF File:** [`docs/EthioEqub_Digital_Management_System_PRTDD.pdf`](./docs/EthioEqub_Digital_Management_System_PRTDD.pdf)
 - **HTML Source:** [`docs/EthioEqub_Digital_Management_System_PRTDD.html`](./docs/EthioEqub_Digital_Management_System_PRTDD.html)
+
+---
+
+## 7. Author & Project Ownership
+
+- **Lead Software Engineer & Author:** Wagnew Nigussie
+- **Email:** `wagnewnigussie569@gmail.com`
+- **Project Repository:** EthioEqub Digital Management System
+

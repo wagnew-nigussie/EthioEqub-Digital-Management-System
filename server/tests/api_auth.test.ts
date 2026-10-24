@@ -14,13 +14,13 @@ describe("API Health & Authentication Endpoints (FR-001, NFR-012)", () => {
     const res = await request(app)
       .post("/api/v1/auth/login")
       .send({
-        email: "abebe@gmail.com",
+        email: "wagnewnigussie569@gmail.com",
         password: "password123",
       });
 
     expect(res.status).toBe(200);
     expect(res.body.success).toBe(true);
-    expect(res.body.data.user.email).toBe("abebe@gmail.com");
+    expect(res.body.data.user.email).toBe("wagnewnigussie569@gmail.com");
     expect(res.body.data.token).toBeDefined();
 
     // Verify Set-Cookie header contains HttpOnly session
@@ -34,7 +34,7 @@ describe("API Health & Authentication Endpoints (FR-001, NFR-012)", () => {
     const res = await request(app)
       .post("/api/v1/auth/login")
       .send({
-        email: "abebe@gmail.com",
+        email: "wagnewnigussie569@gmail.com",
         password: "wrongpassword",
       });
 

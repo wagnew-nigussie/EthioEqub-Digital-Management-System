@@ -396,8 +396,8 @@ def build_prtdd_html():
       <div class="meta-value">Requirements Approved & Baseline Finalized (Phase 2 Sign-Off)</div>
     </div>
     <div class="meta-item">
-      <div class="meta-label">Author / Role</div>
-      <div class="meta-value">Software Engineering Student Developer</div>
+      <div class="meta-label">Author / Lead Software Engineer</div>
+      <div class="meta-value">Wagnew Nigussie (&lt;wagnewnigussie569@gmail.com&gt;)</div>
     </div>
     <div class="meta-item">
       <div class="meta-label">Technical Mentor</div>
@@ -441,14 +441,14 @@ def build_prtdd_html():
       <tr>
         <td><strong>v1.0</strong></td>
         <td>October 2026</td>
-        <td>Student Developer & Mentor</td>
+        <td>Wagnew Nigussie & Mentor</td>
         <td>Complete PRTDD draft publication: 26 sections, full architectural design, DB schema, API specs, security protocols.</td>
       </tr>
       <tr>
         <td><strong>v1.1</strong></td>
         <td>October 2026</td>
-        <td>Student Developer & Mentor</td>
-        <td>Phase 2 baseline finalized: confirmed English-first i18n architecture, configurable dual approval for small groups (< 5 members), conditional guarantor for early payouts, and email + in-app notification strategy with pluggable SMS adapter.</td>
+        <td>Wagnew Nigussie & Mentor</td>
+        <td>Phase 2 baseline finalized: confirmed English-first i18n architecture, configurable dual approval for small groups (&lt; 5 members), conditional guarantor for early payouts, and email + in-app notification strategy with pluggable SMS adapter.</td>
       </tr>
     </tbody>
   </table>
@@ -472,8 +472,8 @@ def build_prtdd_html():
       </tr>
       <tr>
         <td>Student Lead Developer</td>
-        <td>Wagnew A.</td>
-        <td>Draft Completed</td>
+        <td>Wagnew Nigussie (&lt;wagnewnigussie569@gmail.com&gt;)</td>
+        <td>Approved & Signed</td>
         <td>October 2026</td>
       </tr>
       <tr>

@@ -73,7 +73,7 @@ export const LoginPage: React.FC = () => {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="abebe@gmail.com"
+                placeholder="wagnewnigussie569@gmail.com"
                 className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:bg-white transition"
               />
             </div>
@@ -110,10 +110,10 @@ export const LoginPage: React.FC = () => {
             <div className="grid grid-cols-2 gap-2 text-xs">
               <button
                 type="button"
-                onClick={() => handleDemoLogin("abebe@gmail.com")}
+                onClick={() => handleDemoLogin("wagnewnigussie569@gmail.com")}
                 className="p-2 rounded-lg bg-teal-50 text-teal-800 hover:bg-teal-100 font-medium border border-teal-200/60 text-left transition"
               >
-                <div className="font-semibold">Abebe Kebede</div>
+                <div className="font-semibold">Wagnew Nigussie</div>
                 <div className="text-[10px] text-teal-600">Group Owner</div>
               </button>
 

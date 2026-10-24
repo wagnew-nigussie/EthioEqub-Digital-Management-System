@@ -30,11 +30,11 @@ async function main() {
     },
   });
 
-  const abebe = await prisma.user.create({
+  const wagnew = await prisma.user.create({
     data: {
-      email: "abebe@gmail.com",
+      email: "wagnewnigussie569@gmail.com",
       phone: "+251911102030",
-      fullName: "Abebe Kebede",
+      fullName: "Wagnew Nigussie",
       passwordHash: defaultPasswordHash,
       systemRole: SystemRole.USER,
     },
@@ -79,7 +79,7 @@ async function main() {
 
   const boleEqub = await prisma.equbGroup.create({
     data: {
-      ownerId: abebe.id,
+      ownerId: wagnew.id,
       name: "Bole Commercial Merchants Weekly Equb",
       description: "Rotating savings association for Bole road retail shop owners. Weekly rounds with verified Telebirr/CBE receipts.",
       contributionAmount: BigInt(1000000), // 10,000.00 ETB
@@ -95,13 +95,13 @@ async function main() {
   });
 
   // Memberships
-  const memAbebe = await prisma.membership.create({
+  const memWagnew = await prisma.membership.create({
     data: {
-      userId: abebe.id,
+      userId: wagnew.id,
       groupId: boleEqub.id,
       roleInGroup: GroupRole.OWNER,
       payoutPosition: 1,
-      guarantorName: "Kebede Wolde (Father)",
+      guarantorName: "Nigussie (Family Guarantor)",
       guarantorPhone: "+251911998877",
     },
   });
@@ -140,7 +140,7 @@ async function main() {
   });
 
   // Cycles & Payouts
-  const memberships = [memAbebe, memTigist, memChala, memMarta];
+  const memberships = [memWagnew, memTigist, memChala, memMarta];
   const poolAmount = BigInt(4000000); // 40,000.00 ETB
 
   for (let c = 1; c <= 4; c++) {
@@ -170,9 +170,9 @@ async function main() {
         amount: poolAmount,
         status: isCycle1or2 ? PayoutStatus.DISBURSED : PayoutStatus.SCHEDULED,
         approver1Id: isCycle1or2 ? tigist.id : null,
-        approver2Id: isCycle1or2 ? abebe.id : null,
+        approver2Id: isCycle1or2 ? wagnew.id : null,
         disbursedAt: isCycle1or2 ? payoutDate : null,
-        notes: isCycle1or2 ? `Cycle ${c} payout disbursed to ${recipient.userId === abebe.id ? "Abebe" : "Tigist"}` : undefined,
+        notes: isCycle1or2 ? `Cycle ${c} payout disbursed to ${recipient.userId === wagnew.id ? "Wagnew" : "Tigist"}` : undefined,
       },
     });
 
@@ -194,8 +194,8 @@ async function main() {
         });
       }
     } else if (isCycle3) {
-      // In cycle 3 (current): Abebe, Tigist, Chala have paid; Marta is pending
-      for (const m of [memAbebe, memTigist, memChala]) {
+      // In cycle 3 (current): Wagnew, Tigist, Chala have paid; Marta is pending
+      for (const m of [memWagnew, memTigist, memChala]) {
         await prisma.contribution.create({
           data: {
             membershipId: m.id,
@@ -215,7 +215,7 @@ async function main() {
   // Create audit log entry for group creation
   await prisma.auditLog.create({
     data: {
-      actorId: abebe.id,
+      actorId: wagnew.id,
       entityType: "EqubGroup",
       entityId: boleEqub.id,
       action: "SEED_INIT",
