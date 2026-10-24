@@ -1,0 +1,262 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum SystemRole {
+  ADMIN
+  USER
+}
+
+enum GroupRole {
+  OWNER
+  TREASURER
+  MANAGER
+  MEMBER
+}
+
+enum GroupFrequency {
+  DAILY
+  WEEKLY
+  MONTHLY
+}
+
+enum PayoutRule {
+  JOIN_ORDER
+  LOTTERY
+  AUCTION
+}
+
+enum GroupStatus {
+  ACTIVE
+  FROZEN
+  COMPLETED
+}
+
+enum CycleStatus {
+  PENDING
+  OPEN
+  RECONCILED
+  CLOSED
+}
+
+enum PaymentMethod {
+  CASH
+  TELEBIRR
+  CBE_BIRR
+  BANK_TRANSFER
+  OTHER
+}
+
+enum ContributionStatus {
+  PENDING
+  PAID
+  PARTIAL
+  LATE
+  DISPUTED
+  ADJUSTED
+}
+
+enum PayoutStatus {
+  SCHEDULED
+  PENDING_SECOND_APPROVAL
+  APPROVED
+  DISBURSED
+}
+
+enum DisputeStatus {
+  OPEN
+  UNDER_REVIEW
+  RESOLVED
+  REJECTED
+}
+
+model User {
+  id           String     @id @default(uuid()) @db.Uuid
+  email        String     @unique @db.VarChar(255)
+  phone        String     @db.VarChar(32)
+  passwordHash String     @map("password_hash") @db.VarChar(255)
+  fullName     String     @map("full_name") @db.VarChar(128)
+  systemRole   SystemRole @default(USER) @map("system_role")
+  isActive     Boolean    @default(true) @map("is_active")
+  createdAt    DateTime   @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt    DateTime   @updatedAt @map("updated_at") @db.Timestamptz()
+
+  // Relations
+  memberships          Membership[]
+  createdGroups        EqubGroup[]    @relation("GroupOwner")
+  recordedContributions Contribution[] @relation("RecordedContributions")
+  createdAdjustments   Adjustment[]   @relation("CreatedAdjustments")
+  approvedPayouts1     Payout[]       @relation("PayoutApprover1")
+  approvedPayouts2     Payout[]       @relation("PayoutApprover2")
+  auditLogs            AuditLog[]     @relation("ActorAuditLogs")
+  raisedDisputes       Dispute[]      @relation("RaisedDisputes")
+  resolvedDisputes     Dispute[]      @relation("ResolvedDisputes")
+
+  @@map("users")
+}
+
+model EqubGroup {
+  id                         String         @id @default(uuid()) @db.Uuid
+  ownerId                    String         @map("owner_id") @db.Uuid
+  name                       String         @db.VarChar(128)
+  description                String?        @db.Text
+  contributionAmount         BigInt         @map("contribution_amount")
+  currency                   String         @default("ETB") @db.VarChar(3)
+  frequency                  GroupFrequency @default(WEEKLY)
+  totalCycles                Int            @map("total_cycles")
+  payoutRule                 PayoutRule     @default(JOIN_ORDER) @map("payout_rule")
+  requireGuarantor           Boolean        @default(false) @map("require_guarantor")
+  allowSingleApproverIfSmall Boolean        @default(true) @map("allow_single_approver_if_small")
+  status                     GroupStatus    @default(ACTIVE)
+  startDate                  DateTime       @map("start_date") @db.Date
+  createdAt                  DateTime       @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt                  DateTime       @updatedAt @map("updated_at") @db.Timestamptz()
+
+  // Relations
+  owner       User         @relation("GroupOwner", fields: [ownerId], references: [id], onDelete: Restrict)
+  memberships Membership[]
+  cycles      Cycle[]
+
+  @@map("equb_groups")
+}
+
+model Membership {
+  id             String    @id @default(uuid()) @db.Uuid
+  userId         String    @map("user_id") @db.Uuid
+  groupId        String    @map("group_id") @db.Uuid
+  roleInGroup    GroupRole @default(MEMBER) @map("role_in_group")
+  payoutPosition Int?      @map("payout_position")
+  guarantorName  String?   @map("guarantor_name") @db.VarChar(128)
+  guarantorPhone String?   @map("guarantor_phone") @db.VarChar(32)
+  status         String    @default("ACTIVE") @db.VarChar(16)
+  joinedAt       DateTime  @default(now()) @map("joined_at") @db.Timestamptz()
+
+  // Relations
+  user          User           @relation(fields: [userId], references: [id], onDelete: Restrict)
+  group         EqubGroup      @relation(fields: [groupId], references: [id], onDelete: Restrict)
+  contributions Contribution[]
+  payouts       Payout[]
+
+  @@unique([userId, groupId])
+  @@map("memberships")
+}
+
+model Cycle {
+  id          String      @id @default(uuid()) @db.Uuid
+  groupId     String      @map("group_id") @db.Uuid
+  cycleNumber Int         @map("cycle_number")
+  dueDate     DateTime    @map("due_date") @db.Date
+  payoutDate  DateTime    @map("payout_date") @db.Date
+  status      CycleStatus @default(PENDING)
+
+  // Relations
+  group         EqubGroup      @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  contributions Contribution[]
+  payout        Payout?
+
+  @@unique([groupId, cycleNumber])
+  @@map("cycles")
+}
+
+model Contribution {
+  id              String             @id @default(uuid()) @db.Uuid
+  membershipId    String             @map("membership_id") @db.Uuid
+  cycleId         String             @map("cycle_id") @db.Uuid
+  amount          BigInt
+  paymentMethod   PaymentMethod      @map("payment_method")
+  referenceNumber String?            @map("reference_number") @db.VarChar(128)
+  status          ContributionStatus @default(PAID)
+  note            String?            @db.VarChar(300)
+  recordedById    String             @map("recorded_by_id") @db.Uuid
+  recordedAt      DateTime           @default(now()) @map("recorded_at") @db.Timestamptz()
+
+  // Relations
+  membership  Membership   @relation(fields: [membershipId], references: [id], onDelete: Restrict)
+  cycle       Cycle        @relation(fields: [cycleId], references: [id], onDelete: Restrict)
+  recordedBy  User         @relation("RecordedContributions", fields: [recordedById], references: [id], onDelete: Restrict)
+  adjustments Adjustment[]
+  dispute     Dispute?
+
+  @@index([membershipId, cycleId])
+  @@index([referenceNumber])
+  @@map("contributions")
+}
+
+model Adjustment {
+  id             String   @id @default(uuid()) @db.Uuid
+  contributionId String   @map("contribution_id") @db.Uuid
+  amountDelta    BigInt   @map("amount_delta")
+  reason         String   @db.Text
+  createdById    String   @map("created_by_id") @db.Uuid
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz()
+
+  // Relations
+  contribution Contribution @relation(fields: [contributionId], references: [id], onDelete: Restrict)
+  createdBy    User         @relation("CreatedAdjustments", fields: [createdById], references: [id], onDelete: Restrict)
+
+  @@map("adjustments")
+}
+
+model Payout {
+  id          String       @id @default(uuid()) @db.Uuid
+  cycleId     String       @unique @map("cycle_id") @db.Uuid
+  recipientId String       @map("recipient_id") @db.Uuid
+  amount      BigInt
+  status      PayoutStatus @default(SCHEDULED)
+  approver1Id String?      @map("approver_1_id") @db.Uuid
+  approver2Id String?      @map("approver_2_id") @db.Uuid
+  notes       String?      @db.VarChar(300)
+  disbursedAt DateTime?    @map("disbursed_at") @db.Timestamptz()
+
+  // Relations
+  cycle     Cycle      @relation(fields: [cycleId], references: [id], onDelete: Restrict)
+  recipient Membership @relation(fields: [recipientId], references: [id], onDelete: Restrict)
+  approver1 User?      @relation("PayoutApprover1", fields: [approver1Id], references: [id], onDelete: SetNull)
+  approver2 User?      @relation("PayoutApprover2", fields: [approver2Id], references: [id], onDelete: SetNull)
+
+  @@map("payouts")
+}
+
+model Dispute {
+  id              String        @id @default(uuid()) @db.Uuid
+  contributionId  String        @unique @map("contribution_id") @db.Uuid
+  raisedById      String        @map("raised_by_id") @db.Uuid
+  reason          String        @db.Text
+  status          DisputeStatus @default(OPEN)
+  resolutionNotes String?       @map("resolution_notes") @db.Text
+  resolvedById    String?       @map("resolved_by_id") @db.Uuid
+  createdAt       DateTime      @default(now()) @map("created_at") @db.Timestamptz()
+  resolvedAt      DateTime?     @map("resolved_at") @db.Timestamptz()
+
+  // Relations
+  contribution Contribution @relation(fields: [contributionId], references: [id], onDelete: Restrict)
+  raisedBy     User         @relation("RaisedDisputes", fields: [raisedById], references: [id], onDelete: Restrict)
+  resolvedBy   User?        @relation("ResolvedDisputes", fields: [resolvedById], references: [id], onDelete: SetNull)
+
+  @@map("disputes")
+}
+
+model AuditLog {
+  id          String   @id @default(uuid()) @db.Uuid
+  actorId     String?  @map("actor_id") @db.Uuid
+  entityType  String   @map("entity_type") @db.VarChar(64)
+  entityId    String   @map("entity_id") @db.VarChar(64)
+  action      String   @db.VarChar(64)
+  beforeState Json?    @map("before_state")
+  afterState  Json?    @map("after_state")
+  ipAddress   String?  @map("ip_address") @db.VarChar(45)
+  userAgent   String?  @map("user_agent") @db.Text
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz()
+
+  // Relations
+  actor User? @relation("ActorAuditLogs", fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([entityType, entityId])
+  @@index([actorId])
+  @@map("audit_logs")
+}

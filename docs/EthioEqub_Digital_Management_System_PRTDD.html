@@ -1,0 +1,2604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>EthioEqub Digital Management System — Project Requirements and Technical Design Document</title>
+<style>
+  @page {
+    size: A4;
+    margin: 20mm 15mm 20mm 15mm;
+    @top-right {
+      content: "EthioEqub PRTDD v1.0";
+      font-size: 8pt;
+      color: #64748b;
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+    @bottom-right {
+      content: "Page " counter(page);
+      font-size: 8pt;
+      color: #64748b;
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+  }
+
+  *, *:before, *:after {
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif;
+    font-size: 10pt;
+    line-height: 1.55;
+    color: #1e293b;
+    background-color: #ffffff;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Cover Page */
+  .cover-page {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    page-break-after: always;
+    padding: 40px 20px 20px 20px;
+    border-top: 8px solid #0f766e;
+    background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+  }
+
+  .cover-header {
+    margin-top: 40px;
+  }
+
+  .badge-project {
+    display: inline-block;
+    background-color: #ccfbf1;
+    color: #0f766e;
+    font-weight: 700;
+    font-size: 9pt;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 9999px;
+    margin-bottom: 20px;
+    border: 1px solid #99f6e4;
+  }
+
+  .cover-title {
+    font-size: 28pt;
+    font-weight: 800;
+    color: #0f172a;
+    line-height: 1.2;
+    margin: 0 0 16px 0;
+    letter-spacing: -0.02em;
+  }
+
+  .cover-subtitle {
+    font-size: 14pt;
+    font-weight: 400;
+    color: #475569;
+    margin: 0 0 24px 0;
+    line-height: 1.4;
+  }
+
+  .cover-divider {
+    width: 80px;
+    height: 4px;
+    background-color: #0f766e;
+    margin-bottom: 30px;
+    border-radius: 2px;
+  }
+
+  .cover-meta-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 40px;
+    background: #ffffff;
+    padding: 24px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+
+  .meta-item {
+    font-size: 9pt;
+  }
+
+  .meta-label {
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 8pt;
+    margin-bottom: 4px;
+  }
+
+  .meta-value {
+    color: #0f172a;
+    font-weight: 500;
+  }
+
+  .cover-footer {
+    border-top: 1px solid #e2e8f0;
+    padding-top: 20px;
+    font-size: 8.5pt;
+    color: #64748b;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  /* Headings & Structure */
+  h1, h2, h3, h4 {
+    color: #0f172a;
+    font-weight: 700;
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+
+  h1 {
+    font-size: 18pt;
+    margin-top: 32px;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #0f766e;
+    color: #0f766e;
+  }
+
+  .page-break-before {
+    page-break-before: always;
+    break-before: page;
+  }
+
+  h2 {
+    font-size: 13pt;
+    margin-top: 24px;
+    margin-bottom: 12px;
+    color: #1e293b;
+    border-left: 4px solid #0f766e;
+    padding-left: 10px;
+  }
+
+  h3 {
+    font-size: 11pt;
+    margin-top: 18px;
+    margin-bottom: 8px;
+    color: #334155;
+  }
+
+  p {
+    margin: 0 0 10px 0;
+    text-align: justify;
+  }
+
+  ul, ol {
+    margin: 0 0 12px 0;
+    padding-left: 22px;
+  }
+
+  li {
+    margin-bottom: 5px;
+  }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0 20px 0;
+    font-size: 8.5pt;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  th {
+    background-color: #0f766e;
+    color: #ffffff;
+    text-align: left;
+    padding: 8px 10px;
+    font-weight: 600;
+    border: 1px solid #0f766e;
+  }
+
+  td {
+    padding: 7px 10px;
+    border: 1px solid #cbd5e1;
+    vertical-align: top;
+  }
+
+  tr:nth-child(even) td {
+    background-color: #f8fafc;
+  }
+
+  /* Callout Boxes */
+  .callout {
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin: 14px 0;
+    font-size: 9pt;
+    page-break-inside: avoid;
+    break-inside: avoid;
+    border-left: 4px solid #3b82f6;
+    background-color: #eff6ff;
+  }
+
+  .callout-title {
+    font-weight: 700;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .callout.info {
+    border-left-color: #0284c7;
+    background-color: #f0f9ff;
+    color: #0369a1;
+  }
+  .callout.info .callout-title { color: #0284c7; }
+
+  .callout.warning {
+    border-left-color: #d97706;
+    background-color: #fffbeb;
+    color: #92400e;
+  }
+  .callout.warning .callout-title { color: #b45309; }
+
+  .callout.security {
+    border-left-color: #dc2626;
+    background-color: #fef2f2;
+    color: #991b1b;
+  }
+  .callout.security .callout-title { color: #b91c1c; }
+
+  .callout.rule {
+    border-left-color: #059669;
+    background-color: #ecfdf5;
+    color: #065f46;
+  }
+  .callout.rule .callout-title { color: #047857; }
+
+  /* Code / Diagram Blocks */
+  pre, code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  }
+
+  pre {
+    background-color: #0f172a;
+    color: #f8fafc;
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 8pt;
+    line-height: 1.4;
+    overflow-x: auto;
+    page-break-inside: avoid;
+    break-inside: avoid;
+    margin: 12px 0;
+  }
+
+  code.inline {
+    background-color: #f1f5f9;
+    color: #0f766e;
+    padding: 2px 5px;
+    border-radius: 4px;
+    font-size: 8.5pt;
+    border: 1px solid #e2e8f0;
+  }
+
+  .ascii-diagram {
+    background: #f8fafc;
+    color: #0f172a;
+    border: 1px solid #cbd5e1;
+    font-family: monospace;
+    font-size: 7.5pt;
+    line-height: 1.25;
+    white-space: pre;
+    padding: 12px;
+    border-radius: 6px;
+    page-break-inside: avoid;
+  }
+
+  /* TOC */
+  .toc-container {
+    page-break-after: always;
+    break-after: page;
+    padding-top: 10px;
+  }
+
+  .toc-title {
+    font-size: 16pt;
+    font-weight: 700;
+    color: #0f766e;
+    border-bottom: 2px solid #0f766e;
+    padding-bottom: 8px;
+    margin-bottom: 18px;
+  }
+
+  .toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    border-bottom: 1px dotted #cbd5e1;
+    font-size: 9pt;
+  }
+
+  .toc-item.level-1 {
+    font-weight: 600;
+    color: #0f172a;
+    margin-top: 6px;
+  }
+
+  .toc-item.level-2 {
+    padding-left: 16px;
+    color: #475569;
+    font-weight: normal;
+  }
+
+  .toc-dots {
+    flex-grow: 1;
+    border-bottom: 1px dotted #94a3b8;
+    margin: 0 8px 3px 8px;
+  }
+
+  .badge-status {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 7.5pt;
+    font-weight: 600;
+  }
+  .badge-must { background-color: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
+  .badge-should { background-color: #fffbeb; color: #b45309; border: 1px solid #fde68a; }
+  .badge-could { background-color: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+
+</style>
+</head>
+<body>
+
+<!-- SECTION 1: COVER PAGE & VERSION -->
+<div class="cover-page">
+  <div class="cover-header">
+    <div class="badge-project">Final Year Software Engineering Project</div>
+    <div class="cover-title">EthioEqub Digital Management System</div>
+    <div class="cover-subtitle">Project Requirements and Technical Design Document (PRTDD)</div>
+    <div class="cover-divider"></div>
+    <p style="font-size: 10pt; color: #475569; max-width: 650px;">
+      A comprehensive software architecture, financial integrity framework, security model, and implementation blueprint for modernizing traditional Ethiopian rotating savings and credit associations (ROSCA / ዕቁብ).
+    </p>
+  </div>
+
+  <div class="cover-meta-grid">
+    <div class="meta-item">
+      <div class="meta-label">Document Version</div>
+      <div class="meta-value">Version 1.1 (Approved Baseline Specification)</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Review Status</div>
+      <div class="meta-value">Requirements Approved & Baseline Finalized (Phase 2 Sign-Off)</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Author / Role</div>
+      <div class="meta-value">Software Engineering Student Developer</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Technical Mentor</div>
+      <div class="meta-value">Senior Full-Stack Architect & Cybersecurity Specialist</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Target Domain</div>
+      <div class="meta-value">Traditional Ethiopian Equb (ዕቁብ) Group Financial Governance</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Date of Publication</div>
+      <div class="meta-value">October 2026</div>
+    </div>
+  </div>
+
+  <div class="cover-footer">
+    <span>Department of Computer Science & Software Engineering</span>
+    <span>Document Tracking ID: EE-PRTDD-2026-V1.1</span>
+  </div>
+</div>
+
+<!-- DOCUMENT REVISION & APPROVAL TABLE -->
+<div style="page-break-after: always; padding-top: 15px;">
+  <h2>Document Control & Revision History</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 12%;">Version</th>
+        <th style="width: 15%;">Date</th>
+        <th style="width: 25%;">Author</th>
+        <th style="width: 48%;">Summary of Changes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>v0.1</strong></td>
+        <td>October 2026</td>
+        <td>Student Developer</td>
+        <td>Initial requirements capture, scope definition, and high-level structure.</td>
+      </tr>
+      <tr>
+        <td><strong>v1.0</strong></td>
+        <td>October 2026</td>
+        <td>Student Developer & Mentor</td>
+        <td>Complete PRTDD draft publication: 26 sections, full architectural design, DB schema, API specs, security protocols.</td>
+      </tr>
+      <tr>
+        <td><strong>v1.1</strong></td>
+        <td>October 2026</td>
+        <td>Student Developer & Mentor</td>
+        <td>Phase 2 baseline finalized: confirmed English-first i18n architecture, configurable dual approval for small groups (< 5 members), conditional guarantor for early payouts, and email + in-app notification strategy with pluggable SMS adapter.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Stakeholder Sign-Off Register</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 25%;">Stakeholder Role</th>
+        <th style="width: 25%;">Name</th>
+        <th style="width: 25%;">Status</th>
+        <th style="width: 25%;">Sign-Off Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Academic Supervisor</td>
+        <td>Faculty Review Board</td>
+        <td>Pending Defense Review</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td>Student Lead Developer</td>
+        <td>Wagnew A.</td>
+        <td>Draft Completed</td>
+        <td>October 2026</td>
+      </tr>
+      <tr>
+        <td>Technical Architect Mentor</td>
+        <td>Senior Architect Pair</td>
+        <td>Verified Architecture</td>
+        <td>October 2026</td>
+      </tr>
+      <tr>
+        <td>Equb Domain Representative</td>
+        <td>Community Equb Organizer</td>
+        <td>Consulted on Rules</td>
+        <td>October 2026</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout info">
+    <div class="callout-title">Formal Review Notice</div>
+    This document constitutes the baseline specification for the EthioEqub Digital Management System. In accordance with professional engineering standards, no application implementation or folder generation commences until this document is approved. Progress across subsequent phases requires explicit confirmation via the command <code class="inline">next</code>.
+  </div>
+</div>
+
+<!-- TABLE OF CONTENTS -->
+<div class="toc-container">
+  <div class="toc-title">Table of Contents</div>
+  <ul class="toc-list">
+    <li class="toc-item level-1"><span>1. Cover Page & Document Version</span><span class="toc-dots"></span><span>Page 1</span></li>
+    <li class="toc-item level-1"><span>2. Executive Summary</span><span class="toc-dots"></span><span>Page 3</span></li>
+    <li class="toc-item level-1"><span>3. Background and Problem Statement</span><span class="toc-dots"></span><span>Page 3</span></li>
+    <li class="toc-item level-1"><span>4. Project Objectives and Expected Benefits</span><span class="toc-dots"></span><span>Page 4</span></li>
+    <li class="toc-item level-1"><span>5. Project Scope and Limitations</span><span class="toc-dots"></span><span>Page 5</span></li>
+    <li class="toc-item level-1"><span>6. Stakeholders and User Roles</span><span class="toc-dots"></span><span>Page 6</span></li>
+    <li class="toc-item level-1"><span>7. Functional Requirements (FR-001 – FR-020)</span><span class="toc-dots"></span><span>Page 7</span></li>
+    <li class="toc-item level-1"><span>8. Non-Functional Requirements (NFR-001 – NFR-015)</span><span class="toc-dots"></span><span>Page 9</span></li>
+    <li class="toc-item level-1"><span>9. Business Rules (BR-001 – BR-014)</span><span class="toc-dots"></span><span>Page 11</span></li>
+    <li class="toc-item level-1"><span>10. User Journeys and Use Cases (UC-01 – UC-06)</span><span class="toc-dots"></span><span>Page 13</span></li>
+    <li class="toc-item level-1"><span>11. System Architecture and Component Responsibilities</span><span class="toc-dots"></span><span>Page 15</span></li>
+    <li class="toc-item level-1"><span>12. Technology Stack and Justification</span><span class="toc-dots"></span><span>Page 17</span></li>
+    <li class="toc-item level-1"><span>13. Database Design, Entities, Relationships, and ER Diagram</span><span class="toc-dots"></span><span>Page 19</span></li>
+    <li class="toc-item level-1"><span>14. API Design and Representative Endpoints</span><span class="toc-dots"></span><span>Page 22</span></li>
+    <li class="toc-item level-1"><span>15. UI/UX Design Plan and Screen Inventory (S-01 – S-13)</span><span class="toc-dots"></span><span>Page 25</span></li>
+    <li class="toc-item level-1"><span>16. Authentication, Authorization, Privacy, Security, and Audit Requirements</span><span class="toc-dots"></span><span>Page 28</span></li>
+    <li class="toc-item level-1"><span>17. Financial Transaction Integrity, Reconciliation, and Reporting</span><span class="toc-dots"></span><span>Page 30</span></li>
+    <li class="toc-item level-1"><span>18. Notification and Payment Integration Strategy</span><span class="toc-dots"></span><span>Page 32</span></li>
+    <li class="toc-item level-1"><span>19. Validation Rules and Error-Handling Strategy</span><span class="toc-dots"></span><span>Page 33</span></li>
+    <li class="toc-item level-1"><span>20. Testing Strategy and Acceptance Criteria (AC-01 – AC-08)</span><span class="toc-dots"></span><span>Page 35</span></li>
+    <li class="toc-item level-1"><span>21. Development Phases and Milestones (Phases 1 – 12)</span><span class="toc-dots"></span><span>Page 37</span></li>
+    <li class="toc-item level-1"><span>22. Risks, Assumptions, and Mitigation Strategies</span><span class="toc-dots"></span><span>Page 39</span></li>
+    <li class="toc-item level-1"><span>23. Deployment, Backup, Recovery, and Maintenance Plan</span><span class="toc-dots"></span><span>Page 41</span></li>
+    <li class="toc-item level-1"><span>24. Installation Prerequisites and Developer Environment Setup</span><span class="toc-dots"></span><span>Page 42</span></li>
+    <li class="toc-item level-1"><span>25. Final Project Acceptance Checklist</span><span class="toc-dots"></span><span>Page 43</span></li>
+    <li class="toc-item level-1"><span>26. Glossary of Cultural and Technical Terms</span><span class="toc-dots"></span><span>Page 44</span></li>
+  </ul>
+</div>
+
+<!-- SECTION 2: EXECUTIVE SUMMARY -->
+<div class="page-break-before">
+  <h1>2. Executive Summary</h1>
+  <p>
+    An <strong>Equb</strong> (ዕቁብ) is a traditional Ethiopian Rotating Savings and Credit Association (ROSCA) that serves as one of the most prominent informal financial mechanisms in Ethiopian society. In an Equb, a group of trusted participants agree to pool fixed periodic contributions (daily, weekly, or monthly) into a collective fund. At each scheduled cycle, the accumulated sum is distributed as a payout to one selected participant according to predetermined rules (such as a lottery draw, seniority ranking, or mutual auction).
+  </p>
+  <p>
+    Despite handling hundreds of millions of Ethiopian Birr (ETB) annually across urban and rural demographics, traditional Equb operations rely overwhelmingly on manual bookkeeping: paper registers, physical notebooks, handwritten receipts, and unorganized SMS/Telegram chat logs. This reliance on informal manual administration causes frequent bookkeeping errors, misplaced records, payment status disputes, lack of transparent member oversight, and vulnerability to unilateral misappropriation by organizers.
+  </p>
+  <p>
+    The <strong>EthioEqub Digital Management System</strong> is a professional, secure, role-based web application engineered to digitally manage and govern Equb group operations end-to-end. The system digitizes membership onboarding, automated contribution scheduling, manual payment recording with transaction reference tracking, dual-control payout authorization workflows, dispute management, transparent audit logging, and downloadable financial statements.
+  </p>
+
+  <div class="callout warning">
+    <div class="callout-title">Core Financial Boundary & Integrity Principle</div>
+    In Version 1.0 (v1), the EthioEqub system <strong>does not hold custody of user funds nor directly execute automated bank debits</strong>. Money continues to flow through established external channels (cash, commercial bank transfers, Telebirr, and CBE Birr). The system serves as the definitive, immutable digital ledger of record that reconciles and audits all commitments, receipts, payouts, and adjustments against verifiable transaction references. All simulated or test data is strictly isolated and clearly flagged.
+  </div>
+</div>
+
+<!-- SECTION 3: BACKGROUND & PROBLEM STATEMENT -->
+<div>
+  <h1>3. Background and Problem Statement</h1>
+  <h2>3.1 Societal & Cultural Background</h2>
+  <p>
+    In Ethiopia, informal financial institutions—chief among them Equb (savings/credit) and Iddir (bereavement/insurance)—predate the formal banking system and maintain deep cultural legitimacy. For millions of micro-entrepreneurs, civil servants, merchants, and diaspora families, Equb provides vital access to lump-sum capital without the collateral hurdles, bureaucratic paperwork, and high interest rates associated with conventional commercial banks.
+  </p>
+  <p>
+    Equb arrangements range from small family circles (5–10 members contributing 500 ETB weekly) to massive commercial market associations in Addis Ababa (50–100+ merchants contributing 20,000–100,000 ETB daily or weekly). Equb operations are typically managed by a leadership group consisting of a Chairman/Organizer (<strong>Sebsabi / ሰብሳቢ</strong>), a Treasurer (<strong>Genzeb Yazhi / ገንዘብ ያዥ</strong>), and a Secretary (<strong>Tsehafi / ጸሐፊ</strong>).
+  </p>
+
+  <h2>3.2 Problem Analysis</h2>
+  <p>
+    Through field observations and stakeholder interviews with Equb organizers and participants, five core systemic problems were identified:
+  </p>
+  <ul>
+    <li><strong>Vulnerability and Physical Loss of Records:</strong> Physical ledgers deteriorate, become water-damaged, or get lost during changes of leadership. If a notebook is misplaced, entire multi-month payment histories and outstanding debt balances are obliterated.</li>
+    <li><strong>Payment and Balance Disputes:</strong> Members frequently assert they paid via cash or bank transfer on a specific date, while the treasurer’s notebook indicates a pending or delinquent balance. Without a centralized, verifiable reference lookup, disputes can destabilize the group or dissolve friendships.</li>
+    <li><strong>Unilateral Control and Lack of Dual Control:</strong> In traditional setups, a single treasurer decides when payouts are disbursed, creating opportunities for delayed payments, favoritism, or outright embezzlement without independent counter-signatures.</li>
+    <li><strong>Bookkeeping Overhead and Calculation Inaccuracies:</strong> Organizers spend hours manually tallying who paid, who owes late fees, who has already collected their payout, and how much remains in the collective pool. Fractional errors and miscalculations multiply across cycles.</li>
+    <li><strong>Lack of Real-Time Member Transparency:</strong> Ordinary members have no visibility into the current pool status, other members’ compliance rates, or upcoming payout queues unless they attend physically or request verbal updates.</li>
+  </ul>
+
+  <h2>3.3 Formal Problem Statement</h2>
+  <div class="callout security">
+    <div class="callout-title">Problem Statement</div>
+    Traditional Equb associations in Ethiopia lack a secure, accessible, and verifiable digital management system that preserves the cultural ethos of community savings while eliminating bookkeeping errors, record loss, unauthorized payout disbursements, and payment disputes through automated scheduling, dual-approval controls, and an immutable audit trail.
+  </div>
+</div>
+
+<!-- SECTION 4: OBJECTIVES & EXPECTED BENEFITS -->
+<div class="page-break-before">
+  <h1>4. Project Objectives and Expected Benefits</h1>
+
+  <h2>4.1 General Objective</h2>
+  <p>
+    To design, engineer, verify, and document a secure, production-ready, full-stack digital management system that automates the administration, financial recordkeeping, payout governance, and auditing of Ethiopian Equb associations.
+  </p>
+
+  <h2>4.2 Specific Objectives</h2>
+  <ol>
+    <li><strong>Group & Rule Configuration:</strong> Enable Equb organizers to configure groups with customizable frequencies (daily, weekly, monthly), contribution amounts, member counts, and payout rules.</li>
+    <li><strong>Automated Cycle Scheduling:</strong> Automatically generate mathematically consistent contribution cycles and payout schedules upon group inception.</li>
+    <li><strong>Immutable Financial Recording:</strong> Provide treasurers with a streamlined interface to record member payments (cash, bank transfer, Telebirr, CBE Birr) with required transaction reference numbers and zero in-place ledger deletions.</li>
+    <li><strong>Dual-Control Payout Governance:</strong> Implement a mandatory two-person approval workflow (Treasurer + Secondary Approver) before a payout is recognized as disbursed.</li>
+    <li><strong>Real-Time Member Self-Service:</strong> Provide members with a responsive dashboard displaying their personal payment history, outstanding balances, upcoming deadlines, and payout queue position.</li>
+    <li><strong>Comprehensive Financial Reporting:</strong> Generate downloadable periodic reconciliation statements (CSV/PDF) reflecting total collected funds, disbursed payouts, and outstanding arrears.</li>
+    <li><strong>Tamper-Evident Audit Logging:</strong> Capture a permanent, append-only log of every financial creation, status modification, dispute, and administrative action, including actor identity, timestamp, and IP address.</li>
+    <li><strong>Pedagogical Excellence:</strong> Structure the codebase and documentation to serve as an exemplary model of clean software engineering for a student developer, adhering to strict phase-by-phase verification.</li>
+  </ol>
+
+  <h2>4.3 Expected Benefits Matrix</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 25%;">Stakeholder</th>
+        <th style="width: 35%;">Traditional Pain Point</th>
+        <th style="width: 40%;">Expected Benefit in EthioEqub</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Equb Members</strong></td>
+        <td>Uncertainty regarding payment status, lost receipts, lack of payout queue transparency.</td>
+        <td>Immediate access to personal statement, verified receipt references, transparent payout queue.</td>
+      </tr>
+      <tr>
+        <td><strong>Treasurers & Organizers</strong></td>
+        <td>Hours spent on manual bookkeeping, balancing ledgers, tracing uncredited bank transfers.</td>
+        <td>Automated balance calculations, fast contribution entry with duplicate reference checks, instant CSV/PDF export.</td>
+      </tr>
+      <tr>
+        <td><strong>Equb Group as a Whole</strong></td>
+        <td>Disputes leading to group dissolution, suspicion of embezzlement, delayed payouts.</td>
+        <td>Dual-control approval prevents unauthorized withdrawals; immutable audit trail resolves disputes impartially.</td>
+      </tr>
+      <tr>
+        <td><strong>Software Student</strong></td>
+        <td>Lack of real-world experience in full-stack architecture, financial integrity, and security.</td>
+        <td>Deep mastery of professional software engineering practices, TypeScript, PostgreSQL, and security design.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- SECTION 5: SCOPE & LIMITATIONS -->
+<div>
+  <h1>5. Project Scope and Limitations</h1>
+
+  <h2>5.1 In-Scope Capabilities (Version 1.0)</h2>
+  <ul>
+    <li><strong>User Authentication & Profiles:</strong> Email/phone registration, password hashing (Argon2id/bcrypt), role-based authorization, session management via HttpOnly cookies.</li>
+    <li><strong>Group & Membership Lifecycle:</strong> Creation of groups, rule specification, member invitations, role assignments (Admin, Treasurer, Manager, Member), and member deactivation.</li>
+    <li><strong>Cycle & Schedule Engine:</strong> Automated calculation of contribution deadlines, cycle states, and payout dates based on frequency and start date.</li>
+    <li><strong>Financial Ledger Operations:</strong> Manual entry of contributions with payment channel categorization (Cash, Telebirr, CBE Birr, Bank Transfer, Other) and unique reference logging.</li>
+    <li><strong>Adjustment Accounting:</strong> Prohibiting hard deletions; correcting data entry mistakes via signed adjustment entries with audit reasons.</li>
+    <li><strong>Dual-Control Payouts:</strong> Two-step approval requirement for disbursing pooled funds to cycle recipients.</li>
+    <li><strong>Dispute Management:</strong> Mechanism for members to flag a disputed transaction with an admin resolution workflow.</li>
+    <li><strong>Dashboards & Analytics:</strong> Visual statistics on pool collection, delinquent members, upcoming cycles, and payout progress.</li>
+    <li><strong>Reporting Engine:</strong> Exportable CSV ledger tables and downloadable PDF account statements.</li>
+    <li><strong>Notification Infrastructure:</strong> Email notification dispatch for due dates and receipts, with an architectural abstraction ready for SMS integration.</li>
+  </ul>
+
+  <h2>5.2 Out-of-Scope Capabilities (Deferred to Future Versions)</h2>
+  <ul>
+    <li><strong>Direct Payment Gateway Settlement:</strong> The system will not process live automated debit/credit card charges or direct Telebirr/CBE API API merchant wallet withdrawals in v1.0. (Reason: Requires commercial financial licenses, banking merchant contracts, and capital reserves).</li>
+    <li><strong>Escrow / Fund Custody:</strong> The software platform never holds legal custody of user funds.</li>
+    <li><strong>Native Mobile Applications:</strong> No native Swift (iOS) or Kotlin (Android) apps. The frontend is built as a fully responsive Progressive Web Application (PWA) compatible with mobile browsers.</li>
+    <li><strong>Multi-Currency Cross-Border Forex:</strong> Default currency is Ethiopian Birr (ETB). Multi-currency conversions are deferred.</li>
+    <li><strong>Micro-Lending / Interest-Bearing Loans:</strong> Traditional Equb is zero-interest. Secondary auction bidding rules will be supported structurally in logic, but complex compound interest calculations are out of scope.</li>
+  </ul>
+
+  <h2>5.3 Explicit Project Constraints</h2>
+  <div class="callout info">
+    <div class="callout-title">Operational Constraints</div>
+    <ul style="margin: 0; padding-left: 18px;">
+      <li><strong>Connectivity:</strong> Target users operate on varying mobile internet connectivity. API payloads must remain lightweight (&lt; 50 KB) and optimized for low latency.</li>
+      <li><strong>Cost Constraint:</strong> As an academic final-year software engineering project, all infrastructure must operate seamlessly on zero-cost tiers (Render, Neon, Vercel, Supabase) without requiring paid cloud subscriptions.</li>
+      <li><strong>SMS Notification Fallback:</strong> Ethiopian SMS gateway aggregators (e.g., Afromessage) require registered business licenses. In development and academic demonstration, Email and simulated in-app notifications serve as the primary verified delivery channel.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- SECTION 6: STAKEHOLDERS & USER ROLES -->
+<div class="page-break-before">
+  <h1>6. Stakeholders and User Roles</h1>
+
+  <h2>6.1 Stakeholder Classification</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 22%;">Stakeholder Group</th>
+        <th style="width: 38%;">Description & Interest</th>
+        <th style="width: 40%;">Primary Expectations</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Academic Faculty</strong></td>
+        <td>University Computer Science Examination Board</td>
+        <td>Robust software architecture, clean code, rigorous testing, security best practices, and thorough documentation.</td>
+      </tr>
+      <tr>
+        <td><strong>Equb Organizers (Sebsabi)</strong></td>
+        <td>Community leaders who create and oversee Equb groups</td>
+        <td>Simple group setup, transparent member tracking, and dispute-free operations.</td>
+      </tr>
+      <tr>
+        <td><strong>Equb Treasurers (Genzeb Yazhi)</strong></td>
+        <td>Individuals entrusted with recording collections and payouts</td>
+        <td>Fast data entry, automated balance calculations, clear reference checks, and verifiable receipts.</td>
+      </tr>
+      <tr>
+        <td><strong>Equb Members</strong></td>
+        <td>Participants contributing savings and awaiting payouts</td>
+        <td>Mobile accessibility, real-time balance transparency, and assurance that their payments are properly credited.</td>
+      </tr>
+      <tr>
+        <td><strong>External Auditors / Elders</strong></td>
+        <td>Community dispute arbitrators and independent reviewers</td>
+        <td>Unmodifiable, chronological audit logs of all group actions.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>6.2 Role-Based Access Control (RBAC) Matrix</h2>
+  <p>
+    The system implements a granular, role-based permission hierarchy enforced on every backend API endpoint:
+  </p>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 25%;">System Permission</th>
+        <th style="width: 15%; text-align: center;">System Admin</th>
+        <th style="width: 15%; text-align: center;">Group Owner</th>
+        <th style="width: 15%; text-align: center;">Treasurer</th>
+        <th style="width: 15%; text-align: center;">Manager</th>
+        <th style="width: 15%; text-align: center;">Member</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Platform Configuration & Monitoring</td>
+        <td style="text-align: center;">YES</td>
+        <td style="text-align: center;">NO</td>
+        <td style="text-align: center;">NO</td>
+        <td style="text-align: center;">NO</td>
+        <td style="text-align: center;">NO</td>
+      </tr>
+      <tr>
+        <td>Create Equb Group & Define Rules</td>
+        <td style="text-align: center;">YES</td>
+        <td style="text-align: center;">YES</td>
+        <td style="text-align: center;">NO</td>
+        <td style="text-align: center;">NO</td>
+        <td style="text-align: center;">NO</td>
+      </tr>
+      <tr>
+        <td>Invite Members & Assign Roles</td>
+        <td style="text-align: center;">YES</td>
+        <td style="text-align: center;">YES</td>
+        <td style="text-align: center;">NO</td>
+        <td style="text-align: center;">YES</td>
+        <td style="text-align: center;">NO</td>
+      </tr>
+      <tr>
+        <td>Record Member Contribution</td>
+        <td style="text-align: center;">YES</td>
+        <td style="text-align: center;">YES</td>
+        <td style="text-align: center;">YES</td>
+        <td style="text-align: center;">NO</td>
+        <td style="text-align: center;">NO</td>
+      </tr>
+      <tr>
+        <td>Create Financial Adjustment Entry</td>
+        <td style="text-align: center;">YES</td>
+        <td style="text-align: center;">YES</td>
+        <td style="text-align: center;">YES</td>
+        <td style="text-align: center;">NO</td>
+        <td style="text-align: center;">NO</td>
+      </tr>
+      <tr>
+        <td>Primary Payout Approval (Approver 1)</td>
+        <td style="text-align: center;">YES</td>
+        <td style="text-align: center;">YES</td>
+        <td style="text-align: center;">YES</td>
+        <td style="text-align: center;">NO</td>
+        <td style="text-align: center;">NO</td>
+      </tr>
+      <tr>
+        <td>Secondary Payout Approval (Approver 2)</td>
+        <td style="text-align: center;">YES</td>
+        <td style="text-align: center;">YES</td>
+        <td style="text-align: center;">NO</td>
+        <td style="text-align: center;">YES</td>
+        <td style="text-align: center;">NO</td>
+      </tr>
+      <tr>
+        <td>Raise Transaction Dispute</td>
+        <td style="text-align: center;">NO</td>
+        <td style="text-align: center;">NO</td>
+        <td style="text-align: center;">NO</td>
+        <td style="text-align: center;">NO</td>
+        <td style="text-align: center;">YES</td>
+      </tr>
+      <tr>
+        <td>Resolve Dispute & Add Findings</td>
+        <td style="text-align: center;">YES</td>
+        <td style="text-align: center;">YES</td>
+        <td style="text-align: center;">NO</td>
+        <td style="text-align: center;">NO</td>
+        <td style="text-align: center;">NO</td>
+      </tr>
+      <tr>
+        <td>View Group Financial Reports & CSV</td>
+        <td style="text-align: center;">YES</td>
+        <td style="text-align: center;">YES</td>
+        <td style="text-align: center;">YES</td>
+        <td style="text-align: center;">YES</td>
+        <td style="text-align: center;">OWN ONLY</td>
+      </tr>
+      <tr>
+        <td>Inspect System & Group Audit Logs</td>
+        <td style="text-align: center;">YES</td>
+        <td style="text-align: center;">YES</td>
+        <td style="text-align: center;">NO</td>
+        <td style="text-align: center;">NO</td>
+        <td style="text-align: center;">NO</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- SECTION 7: FUNCTIONAL REQUIREMENTS -->
+<div class="page-break-before">
+  <h1>7. Functional Requirements</h1>
+  <p>
+    Functional requirements define the specific behaviors, actions, calculations, and services the system must execute. Each requirement is uniquely identified and prioritized using the MoSCoW framework (Must, Should, Could, Won't).
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 10%;">ID</th>
+        <th style="width: 32%;">Requirement Description</th>
+        <th style="width: 15%;">Role</th>
+        <th style="width: 10%;">Priority</th>
+        <th style="width: 33%;">Acceptance Criteria</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>FR-001</strong></td>
+        <td>User Registration, Login, and Password Recovery.</td>
+        <td>Public / User</td>
+        <td><span class="badge-status badge-must">Must</span></td>
+        <td>User can sign up with name, email, phone, and password. Passwords must pass strength validation and be hashed. Login yields a secure HttpOnly cookie session.</td>
+      </tr>
+      <tr>
+        <td><strong>FR-002</strong></td>
+        <td>Equb Group Creation and Parameter Configuration.</td>
+        <td>Group Owner</td>
+        <td><span class="badge-status badge-must">Must</span></td>
+        <td>Owner can create a group with title, description, contribution amount (minor units), currency (ETB), frequency (daily/weekly/monthly), total member count, and start date.</td>
+      </tr>
+      <tr>
+        <td><strong>FR-003</strong></td>
+        <td>Automated Contribution and Cycle Schedule Generation.</td>
+        <td>System Engine</td>
+        <td><span class="badge-status badge-must">Must</span></td>
+        <td>When a group is initialized, the system automatically computes all cycle dates, deadlines, and payout dates matching the defined frequency and member count.</td>
+      </tr>
+      <tr>
+        <td><strong>FR-004</strong></td>
+        <td>Member Invitation and Role Assignment.</td>
+        <td>Group Owner / Manager</td>
+        <td><span class="badge-status badge-must">Must</span></td>
+        <td>Admins can invite registered users to join a group, designate their specific group role (Treasurer, Manager, Member), and assign their initial payout position.</td>
+      </tr>
+      <tr>
+        <td><strong>FR-005</strong></td>
+        <td>Manual Contribution Recording with Transaction Proof.</td>
+        <td>Treasurer / Owner</td>
+        <td><span class="badge-status badge-must">Must</span></td>
+        <td>Treasurer can record an incoming payment specifying member ID, cycle ID, amount, payment method (Cash, Bank, Telebirr, CBE Birr), date, and unique reference number.</td>
+      </tr>
+      <tr>
+        <td><strong>FR-006</strong></td>
+        <td>Real-Time Outstanding Balance and Arrears Computation.</td>
+        <td>System Engine</td>
+        <td><span class="badge-status badge-must">Must</span></td>
+        <td>The system continuously calculates total expected vs. total received per member per cycle, flagging statuses: <code class="inline">PENDING</code>, <code class="inline">PAID</code>, <code class="inline">PARTIAL</code>, or <code class="inline">LATE</code>.</td>
+      </tr>
+      <tr>
+        <td><strong>FR-007</strong></td>
+        <td>Payout Queue and Payout Generation.</td>
+        <td>System Engine</td>
+        <td><span class="badge-status badge-must">Must</span></td>
+        <td>System maps each cycle to exactly one beneficiary member based on group rules (lottery draw, seniority order, or approved bid). Total payout equals total pool collection.</td>
+      </tr>
+      <tr>
+        <td><strong>FR-008</strong></td>
+        <td>Dual-Control Payout Authorization Workflow.</td>
+        <td>Treasurer & Owner/Manager</td>
+        <td><span class="badge-status badge-must">Must</span></td>
+        <td>Payout disbursement requires two distinct approvals from authorized accounts. Neither approver can act as both Approver 1 and Approver 2 on the same payout.</td>
+      </tr>
+      <tr>
+        <td><strong>FR-009</strong></td>
+        <td>Member Self-Service Dashboard & Account Statement.</td>
+        <td>Member</td>
+        <td><span class="badge-status badge-must">Must</span></td>
+        <td>Members can log in to view their payment history, current balance, upcoming cycle deadlines, payout position, and download their official PDF statement.</td>
+      </tr>
+      <tr>
+        <td><strong>FR-010</strong></td>
+        <td>Exportable Financial Reports (CSV & PDF).</td>
+        <td>Treasurer / Owner</td>
+        <td><span class="badge-status badge-must">Must</span></td>
+        <td>Generate structured CSV and PDF exports for period contributions, member balances, payout disbursements, and general group ledger reconciliation.</td>
+      </tr>
+      <tr>
+        <td><strong>FR-011</strong></td>
+        <td>Immutable Audit Trail of Sensitive Operations.</td>
+        <td>System Engine</td>
+        <td><span class="badge-status badge-must">Must</span></td>
+        <td>Every financial insertion, status update, adjustment, dispute, and approval automatically records an unmodifiable row capturing actor ID, timestamp, IP, and state diff.</td>
+      </tr>
+      <tr>
+        <td><strong>FR-012</strong></td>
+        <td>Automated Contribution Reminders.</td>
+        <td>System Engine</td>
+        <td><span class="badge-status badge-should">Should</span></td>
+        <td>Asynchronous job triggers automated reminder emails to members 48 hours and 24 hours prior to a cycle contribution deadline.</td>
+      </tr>
+      <tr>
+        <td><strong>FR-013</strong></td>
+        <td>Group Freeze and Emergency Deactivation.</td>
+        <td>Group Owner / Admin</td>
+        <td><span class="badge-status badge-should">Should</span></td>
+        <td>Authorized admin can freeze an Equb group in the event of legal disputes or member default, preventing further entries while retaining full read-only history.</td>
+      </tr>
+      <tr>
+        <td><strong>FR-014</strong></td>
+        <td>Contribution Dispute Filing and Resolution.</td>
+        <td>Member & Admin</td>
+        <td><span class="badge-status badge-should">Should</span></td>
+        <td>A member can submit a dispute on an inaccurate contribution record. Admin reviews evidence, resolves with a formal note, and triggers an adjustment entry.</td>
+      </tr>
+      <tr>
+        <td><strong>FR-015</strong></td>
+        <td>SMS Reminder Dispatch via Gateway Adapter.</td>
+        <td>System Engine</td>
+        <td><span class="badge-status badge-could">Could</span></td>
+        <td>Integrate SMS provider adapter (e.g., Afromessage) for mobile text notifications, configurable via external credentials.</td>
+      </tr>
+      <tr>
+        <td><strong>FR-016</strong></td>
+        <td>Bilingual User Interface (Amharic & English).</td>
+        <td>UI Layer</td>
+        <td><span class="badge-status badge-could">Could</span></td>
+        <td>Externalize UI strings through an i18n localization dictionary, allowing instant toggle between English and Amharic (አማርኛ).</td>
+      </tr>
+      <tr>
+        <td><strong>FR-017</strong></td>
+        <td>Visual Dashboard KPIs and Collection Progress.</td>
+        <td>Owner / Treasurer</td>
+        <td><span class="badge-status badge-must">Must</span></td>
+        <td>Display interactive visual metrics: Total Capital Collected, Total Payouts Disbursed, Collection Rate %, and Arrears Distribution.</td>
+      </tr>
+      <tr>
+        <td><strong>FR-018</strong></td>
+        <td>Financial Adjustment Accounting (Zero Hard Deletion).</td>
+        <td>Treasurer / Owner</td>
+        <td><span class="badge-status badge-must">Must</span></td>
+        <td>Mistaken entries are never overwritten or deleted. Adjustments are logged as separate debit/credit differential rows linking back to the parent contribution.</td>
+      </tr>
+      <tr>
+        <td><strong>FR-019</strong></td>
+        <td>Duplicate Reference Detection and Blocking.</td>
+        <td>System Engine</td>
+        <td><span class="badge-status badge-must">Must</span></td>
+        <td>Prevent accidental duplicate entries by enforcing unique database constraints on payment references within the same group and payment channel.</td>
+      </tr>
+      <tr>
+        <td><strong>FR-020</strong></td>
+        <td>Two-Factor Authentication (TOTP) for Privileged Roles.</td>
+        <td>Treasurer / Admin</td>
+        <td><span class="badge-status badge-should">Should</span></td>
+        <td>Provide optional TOTP-based 2FA (Google Authenticator) for users holding Treasurer and Owner roles prior to authorizing payouts.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- SECTION 8: NON-FUNCTIONAL REQUIREMENTS -->
+<div class="page-break-before">
+  <h1>8. Non-Functional Requirements</h1>
+  <p>
+    Non-functional requirements (NFRs) specify the qualitative, architectural, security, and operational standards the system must satisfy.
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 12%;">ID</th>
+        <th style="width: 20%;">Category</th>
+        <th style="width: 48%;">Specification & Standard</th>
+        <th style="width: 20%;">Verification Method</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>NFR-001</strong></td>
+        <td>Cryptographic Security</td>
+        <td>Passwords hashed using Argon2id or bcrypt (minimum 12 salt rounds). Session tokens stored in secure, HttpOnly, SameSite=Lax cookies. All transmission over TLS 1.3 / HTTPS.</td>
+        <td>Security code audit & OWASP dependency check.</td>
+      </tr>
+      <tr>
+        <td><strong>NFR-002</strong></td>
+        <td>Strict Server-Side AuthZ</td>
+        <td>Zero trust on client input. Every protected API route enforces role-based access control (RBAC) and group ownership checks in server middleware.</td>
+        <td>Automated integration test suite with unauthorized requests.</td>
+      </tr>
+      <tr>
+        <td><strong>NFR-003</strong></td>
+        <td>API Performance</td>
+        <td>95% of standard API read queries respond within 500 ms under typical group loads (up to 100 members). Database queries properly indexed.</td>
+        <td>Load benchmarking with Artillery / Autocannon.</td>
+      </tr>
+      <tr>
+        <td><strong>NFR-004</strong></td>
+        <td>Architectural Scalability</td>
+        <td>Stateless backend server architecture allowing independent horizontal scaling. Database connection pooling configured via Prisma / PgBouncer.</td>
+        <td>Architecture review & stateless concurrency test.</td>
+      </tr>
+      <tr>
+        <td><strong>NFR-005</strong></td>
+        <td>Service Availability</td>
+        <td>System targets 99.0% availability during active operational cycles in v1.0. Graceful error degradation upon third-party outage.</td>
+        <td>Uptime monitoring (UptimeRobot / Healthcheck endpoint).</td>
+      </tr>
+      <tr>
+        <td><strong>NFR-006</strong></td>
+        <td>Transactional Reliability</td>
+        <td>All multi-entity financial operations (contributions, adjustments, payouts) wrapped in PostgreSQL atomic ACID transactions (`prisma.$transaction`). No partial writes.</td>
+        <td>Automated failure-injection transaction tests.</td>
+      </tr>
+      <tr>
+        <td><strong>NFR-007</strong></td>
+        <td>Immutable Auditability</td>
+        <td>Audit log is append-only. No API endpoint or database trigger permits `UPDATE` or `DELETE` on the `AuditLog` table. Retained for group lifetime.</td>
+        <td>Database permission verification & unit tests.</td>
+      </tr>
+      <tr>
+        <td><strong>NFR-008</strong></td>
+        <td>Mobile Usability</td>
+        <td>UI designed mobile-first using responsive layouts (Tailwind CSS). Touch targets ≥ 48px. Complies with WCAG 2.1 Level AA contrast standards.</td>
+        <td>Lighthouse accessibility audit (&gt; 90 score).</td>
+      </tr>
+      <tr>
+        <td><strong>NFR-009</strong></td>
+        <td>Maintainability & Typing</td>
+        <td>Strict TypeScript on frontend and backend (`strict: true`). Zero `any` types in core financial modules. Shared Zod validation schemas.</td>
+        <td>Static type checking (`tsc --noEmit`) and ESLint.</td>
+      </tr>
+      <tr>
+        <td><strong>NFR-010</strong></td>
+        <td>Cloud Portability</td>
+        <td>Fully containerizable via standard Dockerfile. Deployable to modern cloud providers (Render, Railway, Fly.io, Vercel).</td>
+        <td>Docker container build and local run test.</td>
+      </tr>
+      <tr>
+        <td><strong>NFR-011</strong></td>
+        <td>Data Privacy & PII Protection</td>
+        <td>Minimization of personally identifiable information (PII). Secrets, API tokens, and database credentials stored exclusively in `.env`, never in version control.</td>
+        <td>Git-secrets scan and pre-commit verification.</td>
+      </tr>
+      <tr>
+        <td><strong>NFR-012</strong></td>
+        <td>Resilient Error Handling</td>
+        <td>Standardized JSON error envelope across all endpoints. Internal database exceptions, stack traces, and SQL queries suppressed in production.</td>
+        <td>Negative test assertions on API error responses.</td>
+      </tr>
+      <tr>
+        <td><strong>NFR-013</strong></td>
+        <td>Localization Readiness</td>
+        <td>All user-facing strings decoupled from JSX markup into structured language resource objects, enabling rapid Amharic translation.</td>
+        <td>Code review of UI localization dictionaries.</td>
+      </tr>
+      <tr>
+        <td><strong>NFR-014</strong></td>
+        <td>Automated Test Coverage</td>
+        <td>Minimum 80% automated test coverage across core financial calculation algorithms, schedule generators, and authorization middleware.</td>
+        <td>Vitest coverage report output.</td>
+      </tr>
+      <tr>
+        <td><strong>NFR-015</strong></td>
+        <td>System Observability</td>
+        <td>Structured JSON logging with request correlation IDs (`x-request-id`) to trace transactions across client, server, and database layers.</td>
+        <td>Log inspection in staging environment.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- SECTION 9: BUSINESS RULES -->
+<div class="page-break-before">
+  <h1>9. Business Rules for Equb Operations</h1>
+  <p>
+    Business rules define the operational policies, constraints, and financial calculation invariants of the Equb domain. Every rule must be strictly enforced in the backend domain layer.
+  </p>
+
+  <div class="callout rule">
+    <div class="callout-title">BR-001: Integer Minor-Unit Currency Representation</div>
+    All monetary amounts must be stored and computed as <strong>64-bit integers in minor units</strong> (cents / santim). For Ethiopian Birr (ETB), 1 Birr = 100 santim. (e.g., 5,000 ETB is represented as <code>500000</code>). Floating-point data types (<code>FLOAT</code>, <code>DOUBLE</code>) are strictly prohibited for financial balances to prevent IEEE-754 precision rounding errors.
+  </div>
+
+  <div class="callout rule">
+    <div class="callout-title">BR-002: Cycle Count and Member Synchronization</div>
+    The number of cycles in an Equb group equals the number of full membership shares ($N$). Each full member is entitled to receive exactly one payout during the complete Equb round. If a member purchases a fractional share (e.g., 0.5 share), they must be paired with another fractional member to constitute one full payout cycle, or receive half the pooled payout.
+  </div>
+
+  <div class="callout rule">
+    <div class="callout-title">BR-003: Contribution Lifecycle & Late Payment State Engine</div>
+    A contribution record follows an explicit state transition machine:
+    <br><code>PENDING &rarr; PAID</code> (full amount received on/before due date)
+    <br><code>PENDING &rarr; PARTIAL</code> (partial amount received; balance remains pending)
+    <br><code>PENDING &rarr; LATE</code> (due date has elapsed without required contribution)
+    <br><code>PAID / PARTIAL &rarr; DISPUTED</code> (member challenges the recorded record)
+  </div>
+
+  <div class="callout rule">
+    <div class="callout-title">BR-004: Payment Method Classification & Mandatory Reference</div>
+    Every contribution record must specify an authorized payment channel: <code>CASH</code>, <code>BANK_TRANSFER</code>, <code>TELEBIRR</code>, <code>CBE_BIRR</code>, or <code>OTHER</code>. For all electronic channels (Bank, Telebirr, CBE Birr), a unique external transaction reference number (e.g., Telebirr transaction ID or CBE slip number) is mandatory. Cash transactions must record the treasurer's physical receipt book number.
+  </div>
+
+  <div class="callout rule">
+    <div class="callout-title">BR-005: Duplicate Reference Collision Prevention</div>
+    The system shall enforce a unique composite constraint on <code>(group_id, payment_method, reference_number)</code> for all non-null references. Any attempt to record a contribution using an already recorded reference within that group shall be rejected immediately with an HTTP 409 Conflict.
+  </div>
+
+  <div class="callout rule">
+    <div class="callout-title">BR-006: Immutable Ledger & Adjustment Accounting</div>
+    Under no circumstances may an existing financial contribution row be edited or deleted (no in-place <code>UPDATE</code> or <code>DELETE</code>). If a treasurer records an erroneous amount or assigns it to the wrong member, the correction must be effected via an <code>Adjustment</code> record specifying the delta (positive or negative), the correction rationale, and the authorized actor ID.
+  </div>
+
+  <div class="callout rule">
+    <div class="callout-title">BR-007: Dual-Control Payout Authorization</div>
+    Disbursement of a cycle payout pool requires independent authorization from two distinct privileged users: <strong>Approver 1</strong> (typically the Treasurer verifying fund availability) and <strong>Approver 2</strong> (the Group Owner or Manager confirming member eligibility). The system shall reject any approval where <code>Approver 1 ID == Approver 2 ID</code>. <em>Phase 2 Decision:</em> For small informal or family groups (&lt; 5 members), the Group Owner may configure single-approver disbursement at group creation if enabled in group bylaws.
+  </div>
+
+  <div class="callout rule">
+    <div class="callout-title">BR-008: Payout Sequencing Algorithms</div>
+    The order of payouts is established at group formation through one of three transparent algorithms:
+    <ol style="margin: 4px 0 4px 0; padding-left: 20px;">
+      <li><strong>Pre-Agreed Seniority (JOIN_ORDER):</strong> Sequential schedule based on agreed roster or initial join date.</li>
+      <li><strong>Verifiable Lottery Draw (LOTTERY):</strong> Randomized selection executed at cycle inception, recorded in the audit log.</li>
+      <li><strong>Auction / Bidding (AUCTION):</strong> In groups that permit bidding, members bid a discount rebate to claim an urgent payout. The discount is distributed as a dividend among remaining members.</li>
+    </ol>
+  </div>
+
+  <div class="callout rule">
+    <div class="callout-title">BR-009: Group Dissolution & Freezing Rules</div>
+    An Equb group cannot be deleted while active cycles or outstanding balances exist. An owner may only mark a group as <code>FROZEN</code> (suspending all writes during dispute resolution) or <code>CLOSED</code> (upon completion of all cycles and full zero-balance reconciliation). Historical data remains permanently accessible read-only.
+  </div>
+
+  <div class="callout rule">
+    <div class="callout-title">BR-010: Dispute Freezing and Resolution Protocol</div>
+    When a member raises a dispute against a recorded contribution:
+    <ul style="margin: 4px 0 4px 0; padding-left: 20px;">
+      <li>The contribution status immediately transitions to <code>DISPUTED</code>.</li>
+      <li>The disputed amount is withheld from aggregate payout pool calculations until resolved.</li>
+      <li>Resolution requires an Administrator or Owner to submit a formal investigation finding, triggering either an adjustment entry or reaffirmation of the original record.</li>
+    </ul>
+  </div>
+
+  <div class="callout rule">
+    <div class="callout-title">BR-011: Strict Non-Negative Balance & Overpayment Rules</div>
+    Overpayments by members are permitted and credited to an unallocated prepaid balance. In subsequent cycles, the prepaid balance is automatically drawn down to satisfy new contribution demands. Negative contributions are strictly forbidden.
+  </div>
+
+  <div class="callout rule">
+    <div class="callout-title">BR-012: Complete Audit Context Capture</div>
+    Every mutating API request on a financial entity must extract and persist: (1) Actor User ID, (2) Client IP Address, (3) User-Agent Header, (4) Precise UTC Timestamp, (5) Action Type, and (6) Pre- and Post-Mutation JSON state diffs.
+  </div>
+
+  <div class="callout rule">
+    <div class="callout-title">BR-013: Member Replacement and Default Guarantee (Wasa)</div>
+    If a member defaults after having already received their payout, the traditional Equb rule requires their assigned guarantor (<strong>Wasa / ዋስ</strong>) to assume contribution liability. <em>Phase 2 Decision:</em> Guarantor assignment is configurable per group: strictly mandatory for members receiving early payouts if enabled in group bylaws (protecting the collective pool post-disbursement), and optional for other cycles.
+  </div>
+
+  <div class="callout rule">
+    <div class="callout-title">BR-014: Cycle Pool Solvency Invariant</div>
+    A payout cannot be released if the total confirmed collected contributions for that cycle do not equal the required pool sum, unless the group explicitly authorizes an advance loan from group reserve funds, which must be audited as a reserve draw.
+  </div>
+</div>
+
+<!-- SECTION 10: USER JOURNEYS & USE CASES -->
+<div class="page-break-before">
+  <h1>10. User Journeys and Use Cases</h1>
+
+  <h2>10.1 Use Case Summary</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 12%;">UC ID</th>
+        <th style="width: 25%;">Use Case Title</th>
+        <th style="width: 18%;">Primary Actor</th>
+        <th style="width: 45%;">Core Objective</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>UC-01</strong></td>
+        <td>Configure Equb & Generate Schedule</td>
+        <td>Group Owner</td>
+        <td>Establish a new Equb group, invite members, and generate all cycle deadlines.</td>
+      </tr>
+      <tr>
+        <td><strong>UC-02</strong></td>
+        <td>Record Member Contribution</td>
+        <td>Treasurer</td>
+        <td>Record manual payment receipt with unique reference number and verify balance.</td>
+      </tr>
+      <tr>
+        <td><strong>UC-03</strong></td>
+        <td>Dual Payout Authorization</td>
+        <td>Treasurer & Owner</td>
+        <td>Authorize and confirm payout disbursement to the designated cycle beneficiary.</td>
+      </tr>
+      <tr>
+        <td><strong>UC-04</strong></td>
+        <td>Self-Service Statement & Balance</td>
+        <td>Member</td>
+        <td>View live status, check payout position, and download verified PDF statement.</td>
+      </tr>
+      <tr>
+        <td><strong>UC-05</strong></td>
+        <td>Submit & Resolve Dispute</td>
+        <td>Member & Admin</td>
+        <td>Flag an inaccurate payment entry, provide proof, and review administrative finding.</td>
+      </tr>
+      <tr>
+        <td><strong>UC-06</strong></td>
+        <td>Period Reconciliation & Export</td>
+        <td>Treasurer</td>
+        <td>Reconcile group ledger against external bank statements and export CSV/PDF reports.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>10.2 Detailed Use Case Specifications</h2>
+
+  <h3>UC-01: Configure Equb Group and Generate Schedule</h3>
+  <ul>
+    <li><strong>Actor:</strong> Group Owner (Sebsabi)</li>
+    <li><strong>Pre-conditions:</strong> Owner is authenticated and holds verified email credentials.</li>
+    <li><strong>Main Flow:</strong>
+      <ol>
+        <li>Owner navigates to "Create New Equb" screen.</li>
+        <li>Owner enters Title ("Bole Commercial Equb Round 3"), Description, Contribution Amount (10,000 ETB), Frequency (Weekly), Number of Members (20), Start Date (2026-11-01), and Payout Rule (JOIN_ORDER).</li>
+        <li>System validates inputs (amount &gt; 0, members &gt;= 2, date &gt;= today).</li>
+        <li>System renders an interactive preview of all 20 calculated cycles with projected due dates and payout dates.</li>
+        <li>Owner confirms creation. System executes an atomic transaction creating the <code>Group</code> and 20 <code>Cycle</code> records.</li>
+        <li>Owner invites 20 members via email/phone link.</li>
+      </ol>
+    </li>
+    <li><strong>Post-conditions:</strong> Group status set to <code>ACTIVE</code>; schedule persisted; invitations queued.</li>
+  </ul>
+
+  <h3>UC-02: Record Member Contribution with Reference Proof</h3>
+  <ul>
+    <li><strong>Actor:</strong> Treasurer (Genzeb Yazhi)</li>
+    <li><strong>Pre-conditions:</strong> Group is active; cycle is in <code>OPEN</code> state; member is registered in group.</li>
+    <li><strong>Main Flow:</strong>
+      <ol>
+        <li>Treasurer selects current cycle and chooses Member from roster.</li>
+        <li>System displays member's current expected balance (e.g., 10,000 ETB).</li>
+        <li>Treasurer inputs received amount (10,000 ETB), payment method (<code>TELEBIRR</code>), and reference number (<code>TB-9847291048</code>).</li>
+        <li>System checks database for reference uniqueness within the group.</li>
+        <li>Treasurer clicks "Submit Contribution".</li>
+        <li>Backend validates payload with Zod, checks role authorization, persists <code>Contribution</code> row inside a transaction, and writes an unmodifiable <code>AuditLog</code> row.</li>
+        <li>Dashboard updates instantly; an automated email receipt is dispatched to the member.</li>
+      </ol>
+    </li>
+    <li><strong>Alternative Flow (Duplicate Reference):</strong> If reference <code>TB-9847291048</code> exists, system rejects write with HTTP 409 and displays error: "Transaction reference already recorded for this group on 2026-10-15."</li>
+  </ul>
+
+  <h3>UC-03: Dual-Control Payout Authorization and Issuance</h3>
+  <ul>
+    <li><strong>Actors:</strong> Approver 1 (Treasurer) and Approver 2 (Group Owner / Manager)</li>
+    <li><strong>Pre-conditions:</strong> Cycle collection deadline has arrived; total pool is verified; payout recipient is identified.</li>
+    <li><strong>Main Flow:</strong>
+      <ol>
+        <li>Treasurer opens "Payout Approvals" screen, reviews Cycle 4 recipient (Abebe Kebede, Pool: 200,000 ETB).</li>
+        <li>Treasurer confirms all 20 member contributions are reconciled and clicks "Authorize Payout (Approver 1)".</li>
+        <li>System updates Payout record status to <code>PENDING_SECOND_APPROVAL</code>, recording Approver 1 user ID and timestamp.</li>
+        <li>Group Owner receives an approval notification, logs into dashboard from their separate device.</li>
+        <li>Group Owner reviews payout details and clicks "Finalize Disbursement (Approver 2)".</li>
+        <li>System verifies <code>Approver 1 != Approver 2</code>, marks payout <code>PAID</code>, logs disbursement date, and updates group pool ledger.</li>
+      </ol>
+    </li>
+    <li><strong>Post-conditions:</strong> Recipient notified; payout marked complete; audit log permanently updated.</li>
+  </ul>
+</div>
+
+<!-- SECTION 11: SYSTEM ARCHITECTURE -->
+<div class="page-break-before">
+  <h1>11. System Architecture and Component Responsibilities</h1>
+
+  <h2>11.1 Architectural Pattern</h2>
+  <p>
+    The system follows a modern <strong>3-Tier Layered Architecture with a Modular Monolith backend</strong>. This architecture was selected deliberately to provide clean separation of concerns, strong type-safety, rapid development velocity, and operational simplicity suitable for academic defense and production reliability.
+  </p>
+
+  <div class="ascii-diagram">
++---------------------------------------------------------------------------------------------------+
+|                                      CLIENT PRESENTATION TIER                                     |
+|  +---------------------------------------------------------------------------------------------+  |
+|  |                           React 18 / 19 SPA (Vite + TypeScript)                             |  |
+|  |  +---------------------+  +----------------------+  +------------------+  +--------------+  |  |
+|  |  |  Tailwind CSS UI    |  |  TanStack Query      |  |  React Router    |  |  Zod Client  |  |  |
+|  |  |  (shadcn components)|  |  (Cache & API sync)  |  |  (Protected Nav) |  |  Validation  |  |  |
+|  |  +---------------------+  +----------------------+  +------------------+  +--------------+  |  |
+|  +---------------------------------------------------------------------------------------------+  |
++--------------------------------------------------+------------------------------------------------+
+                                                   | HTTPS (TLS 1.3) / JSON REST API
+                                                   | Secure HttpOnly Session Cookies
++--------------------------------------------------v------------------------------------------------+
+|                                       APPLICATION BACKEND TIER                                    |
+|  +---------------------------------------------------------------------------------------------+  |
+|  |                              Node.js + Express.js + TypeScript                              |  |
+|  |                                                                                             |  |
+|  |  [Security & Routing]                                                                       |  |
+|  |   --> CORS / Helmet / Rate Limiting Middleware                                              |  |
+|  |   --> Authentication Middleware (Session / Token Validator)                                |  |
+|  |   --> Role-Based Access Control (RBAC) Guard (Owner / Treasurer / Member)                   |  |
+|  |   --> Request ID Injector (Correlation Tracking)                                           |  |
+|  |                                                                                             |  |
+|  |  [Domain Services Layer]                                                                    |  |
+|  |   --> GroupService      --> ContributionService  --> PayoutService (Dual Approval)          |  |
+|  |   --> CycleEngine       --> BalanceService       --> AuditLogService                        |  |
+|  |   --> DisputeService    --> ReportExportService  --> NotificationService                    |  |
+|  |                                                                                             |  |
+|  |  [Validation & Data Access]                                                                 |  |
+|  |   --> Shared Zod DTO Validation (Strict Payload Parsing)                                    |  |
+|  |   --> Prisma ORM Client (Parameterized Queries, Connection Pooling)                         |  |
+|  +---------------------------------------------------------------------------------------------+  |
++------------------------------------+-----------------------------+--------------------------------+
+                                     |                             |
+                                     | SQL via TCP                 | Redis / Local Memory
+                                     | (ACID Transactions)         | Job Scheduling
++------------------------------------v---------+   +---------------v--------------------------------+
+|               PERSISTENCE TIER               |   |            ASYNC WORKER TIER                   |
+|  +----------------------------------------+  |   |  +------------------------------------------+  |
+|  |        PostgreSQL 15+ Relational DB    |  |   |  |        Node-Cron / BullMQ Worker         |  |
+|  |  - Users & Credentials                 |  |   |  |  - Scheduled Email Due-Date Reminders    |  |
+|  |  - Groups, Memberships, Cycles         |  |   |  |  - Daily Pool Balance Reconciliation Job |  |
+|  |  - Contributions & Adjustments (Ledger)|  |   |  |  - Automated Inactivity Alert Checks     |  |
+|  |  - Dual Approvals & Payouts            |  |   |  +------------------------------------------+  |
+|  |  - Append-Only Audit Log Tables        |  |   +------------------------------------------------+
+|  +----------------------------------------+  |
++----------------------------------------------+
+  </div>
+
+  <h2>11.2 Component Responsibilities</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 20%;">Component</th>
+        <th style="width: 35%;">Core Responsibilities</th>
+        <th style="width: 45%;">Design Decisions & Guarantees</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Frontend Client (React)</strong></td>
+        <td>Renders accessible, responsive dashboard views; manages client-side form state; provides optimistic UI updates; formats minor-unit currency into user-friendly ETB displays.</td>
+        <td>Built with Vite for sub-second hot module reload. Uses Tailwind CSS for mobile-first responsiveness. Client validation is treated as UX enhancement only; never trusted for security.</td>
+      </tr>
+      <tr>
+        <td><strong>API Gateway / Router</strong></td>
+        <td>Terminates HTTP requests; validates SSL/TLS headers; applies IP rate-limiting; parses JSON payloads; verifies session cookies.</td>
+        <td>Strict CORS origin whitelisting; Helmet security headers; centralized error handling middleware preventing server stack trace leaks.</td>
+      </tr>
+      <tr>
+        <td><strong>Service Layer (Express)</strong></td>
+        <td>Executes business logic: cycle calculation algorithms, dual-control payout verification, duplicate reference prevention, balance reconciliation.</td>
+        <td>Clean architecture: controllers only handle HTTP transport, delegating all domain rules to decoupled, unit-testable service classes.</td>
+      </tr>
+      <tr>
+        <td><strong>Persistence Layer (Prisma & Postgres)</strong></td>
+        <td>Enforces relational integrity, foreign key cascading constraints, unique compound indexes, and ACID guarantees for financial writes.</td>
+        <td>PostgreSQL selected for transactional durability. Prisma provides end-to-end TypeScript type inference from database schema to frontend DTOs.</td>
+      </tr>
+      <tr>
+        <td><strong>Background Worker</strong></td>
+        <td>Executes time-based tasks: sending reminder notifications before deadlines, identifying late members, and calculating daily audit totals.</td>
+        <td>Runs as an isolated scheduled process; deduplicates notification dispatches using idempotency keys.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- SECTION 12: TECHNOLOGY STACK & JUSTIFICATION -->
+<div class="page-break-before">
+  <h1>12. Technology Stack and Justification</h1>
+
+  <h2>12.1 Technology Selection Matrix</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 18%;">Layer</th>
+        <th style="width: 25%;">Selected Technology</th>
+        <th style="width: 25%;">Evaluated Alternatives</th>
+        <th style="width: 32%;">Engineering Justification</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Frontend Core</strong></td>
+        <td><strong>React 18/19 + Vite + TypeScript</strong></td>
+        <td>Next.js, Vue 3, Angular</td>
+        <td>Single-Page Application (SPA) architecture allows lightning-fast navigation, zero server-rendering overhead, simple deployment on free CDNs (Vercel/Netlify), and strong component reusability.</td>
+      </tr>
+      <tr>
+        <td><strong>CSS & UI System</strong></td>
+        <td><strong>Tailwind CSS + Lucide Icons</strong></td>
+        <td>Bootstrap, Material UI, Chakra UI</td>
+        <td>Utility-first CSS produces minimal bundle sizes, complete design freedom, mobile-first responsiveness out-of-the-box, and eliminates bloated third-party CSS dependencies.</td>
+      </tr>
+      <tr>
+        <td><strong>Backend API</strong></td>
+        <td><strong>Node.js (LTS v20+) + Express + TypeScript</strong></td>
+        <td>Python (Django/FastAPI), Java (Spring Boot), Go</td>
+        <td>Uniform language (TypeScript) across the entire stack simplifies development for a student. Massive package ecosystem, lightweight footprint, and non-blocking I/O ideal for REST APIs.</td>
+      </tr>
+      <tr>
+        <td><strong>Database</strong></td>
+        <td><strong>PostgreSQL 15+</strong></td>
+        <td>MongoDB, MySQL, SQLite</td>
+        <td>Financial ledgers demand strict ACID transactional guarantees, strong foreign key constraints, and relational integrity. MongoDB's eventual consistency is unsuitable for financial ledgers.</td>
+      </tr>
+      <tr>
+        <td><strong>ORM & Migrations</strong></td>
+        <td><strong>Prisma ORM</strong></td>
+        <td>TypeORM, Drizzle, Sequelize</td>
+        <td>Declarative schema modeling, automatic migration history tracking, and unmatched TypeScript type safety. Prevents SQL injection via parameterized queries.</td>
+      </tr>
+      <tr>
+        <td><strong>Schema Validation</strong></td>
+        <td><strong>Zod</strong></td>
+        <td>Joi, Yup, Class-Validator</td>
+        <td>Enables static type inference directly from validation schemas. Allows sharing validation schemas between backend API controllers and frontend forms.</td>
+      </tr>
+      <tr>
+        <td><strong>Authentication</strong></td>
+        <td><strong>HttpOnly Secure Cookies + Argon2id / bcrypt</strong></td>
+        <td>LocalStorage JWT, OAuth-only</td>
+        <td>Storing authentication tokens in <code class="inline">httpOnly, Secure, SameSite=Lax</code> cookies completely mitigates Cross-Site Scripting (XSS) token theft vulnerabilities.</td>
+      </tr>
+      <tr>
+        <td><strong>Automated Testing</strong></td>
+        <td><strong>Vitest + Supertest</strong></td>
+        <td>Jest, Mocha/Chai</td>
+        <td>Vitest runs in the native Vite pipeline, providing 10x faster execution than legacy Jest, native ESM support, and built-in TypeScript execution.</td>
+      </tr>
+      <tr>
+        <td><strong>Version Control & CI</strong></td>
+        <td><strong>Git + GitHub + GitHub Actions</strong></td>
+        <td>GitLab, Bitbucket</td>
+        <td>Industry standard. Automated GitHub Actions run type-checks, linters, and test suites on every pull request.</td>
+      </tr>
+      <tr>
+        <td><strong>Hosting Strategy</strong></td>
+        <td><strong>Vercel (SPA) + Render (API) + Neon (Postgres)</strong></td>
+        <td>AWS (ECS/RDS), DigitalOcean</td>
+        <td>Generous free tiers perfectly tailored for academic defense demonstrations without ongoing operational costs. Fully production-capable.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>12.2 Prerequisites for Developer Environment</h2>
+  <ul>
+    <li><strong>Runtime Environment:</strong> Node.js version 20.x or higher (LTS).</li>
+    <li><strong>Package Manager:</strong> npm version 10.x or higher.</li>
+    <li><strong>Version Control:</strong> Git version 2.40+ configured with GitHub.</li>
+    <li><strong>Database Server:</strong> PostgreSQL 15+ (local instance or cloud connection string from Neon.tech / Supabase).</li>
+    <li><strong>Code Editor:</strong> Visual Studio Code with recommended extensions: ESLint, Prettier, Prisma, Tailwind CSS IntelliSense.</li>
+  </ul>
+</div>
+
+<!-- SECTION 13: DATABASE DESIGN -->
+<div class="page-break-before">
+  <h1>13. Database Design, Entities, Relationships, and ER Diagram</h1>
+
+  <h2>13.1 Entity Relationship Diagram (ERD)</h2>
+  <div class="ascii-diagram">
++---------------------+       1:N       +----------------------+       1:N       +--------------------+
+|        User         |---------------->|      Membership      |<----------------|     EqubGroup      |
+|---------------------|                 |----------------------|                 |--------------------|
+| id (PK)             |                 | id (PK)              |                 | id (PK)            |
+| email (UQ)          |                 | user_id (FK)         |                 | owner_id (FK)      |
+| phone               |                 | group_id (FK)        |                 | name               |
+| password_hash       |                 | role_in_group        |                 | contribution_amount|
+| full_name           |                 | payout_position      |                 | currency (ETB)     |
+| is_active           |                 | status               |                 | frequency          |
+| created_at          |                 | joined_at            |                 | total_cycles       |
++----------+----------+                 +----------+-----------+                 | status             |
+           |                                       |                             +---------+----------+
+           | 1:N                                   | 1:N                                   |
+           |                                       v                                       | 1:N
+           |                            +----------------------+                           |
+           |                            |     Contribution     |                           v
+           |                            |----------------------|                 +--------------------+
+           |                            | id (PK)              |        N:1      |       Cycle        |
+           |                            | membership_id (FK)   |---------------->|--------------------|
+           |                            | cycle_id (FK)        |                 | id (PK)            |
+           |                            | amount (BIGINT)      |                 | group_id (FK)      |
+           |                            | payment_method       |                 | cycle_number       |
+           |                            | reference_number     |                 | due_date           |
+           |                            | status               |                 | payout_date        |
+           |                            | recorded_by_id (FK)  |                 | status             |
+           |                            | recorded_at          |                 +---------+----------+
+           |                            +----------+-----------+                           |
+           |                                       |                                       | 1:1
+           |                                       | 1:N                                   v
+           |                                       v                             +--------------------+
+           |                            +----------------------+                 |       Payout       |
+           |                            |      Adjustment      |                 |--------------------|
+           |                            |----------------------|                 | id (PK)            |
+           |                            | id (PK)              |                 | cycle_id (FK, UQ)  |
+           |                            | contribution_id (FK) |                 | recipient_id (FK)  |
+           |                            | amount_delta (BIGINT)|                 | amount (BIGINT)    |
+           |                            | reason               |                 | status             |
+           |                            | created_by_id (FK)   |                 | approver_1_id (FK) |
+           |                            | created_at           |                 | approver_2_id (FK) |
+           |                                       |                             | disbursed_at       |
+           |                                       | 1:1                         +--------------------+
+           |                                       v
+           |                            +----------------------+
+           |                            |       Dispute        |
+           |                            |----------------------|
+           |                            | id (PK)              |
+           |                            | contribution_id (FK) |
+           |                            | raised_by_id (FK)    |
+           |                            | reason               |
+           |                            | status               |
+           |                            | resolution_notes     |
+           |                            | resolved_by_id (FK)  |
+           |                            | created_at           |
+           |                            +----------------------+
+           |
+           | 1:N
+           v
++---------------------+
+|      AuditLog       |
+|---------------------|
+| id (PK)             |
+| actor_id (FK)       |
+| entity_type         |
+| entity_id           |
+| action              |
+| before_state (JSON) |
+| after_state (JSON)  |
+| ip_address          |
+| user_agent          |
+| created_at          |
++---------------------+
+  </div>
+
+  <h2>13.2 Database Schema Specifications</h2>
+
+  <h3>Table: User</h3>
+  <table>
+    <thead>
+      <tr><th>Column</th><th>Data Type</th><th>Constraints</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>id</td><td>UUID</td><td>PRIMARY KEY, DEFAULT gen_random_uuid()</td><td>Unique user identifier.</td></tr>
+      <tr><td>email</td><td>VARCHAR(255)</td><td>UNIQUE, NOT NULL</td><td>Normalized lower-case email address.</td></tr>
+      <tr><td>phone</td><td>VARCHAR(32)</td><td>NOT NULL</td><td>Ethiopian mobile phone (+251...).</td></tr>
+      <tr><td>password_hash</td><td>VARCHAR(255)</td><td>NOT NULL</td><td>Argon2id or bcrypt hash.</td></tr>
+      <tr><td>full_name</td><td>VARCHAR(128)</td><td>NOT NULL</td><td>User's legal full name.</td></tr>
+      <tr><td>is_active</td><td>BOOLEAN</td><td>DEFAULT TRUE</td><td>Account active flag.</td></tr>
+      <tr><td>created_at</td><td>TIMESTAMPTZ</td><td>DEFAULT NOW()</td><td>Registration timestamp.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Table: EqubGroup</h3>
+  <table>
+    <thead>
+      <tr><th>Column</th><th>Data Type</th><th>Constraints</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>id</td><td>UUID</td><td>PRIMARY KEY</td><td>Unique group identifier.</td></tr>
+      <tr><td>owner_id</td><td>UUID</td><td>FOREIGN KEY &rarr; User(id), ON DELETE RESTRICT</td><td>Creator/Admin of the Equb group.</td></tr>
+      <tr><td>name</td><td>VARCHAR(128)</td><td>NOT NULL</td><td>Group title (e.g. Merkato Textile Equb).</td></tr>
+      <tr><td>description</td><td>TEXT</td><td>NULL</td><td>Detailed purpose and group bylaws.</td></tr>
+      <tr><td>contribution_amount</td><td>BIGINT</td><td>NOT NULL, CHECK (&gt; 0)</td><td>Amount in minor units (santim).</td></tr>
+      <tr><td>currency</td><td>VARCHAR(3)</td><td>DEFAULT 'ETB'</td><td>ISO currency code.</td></tr>
+      <tr><td>frequency</td><td>VARCHAR(16)</td><td>NOT NULL, CHECK (daily, weekly, monthly)</td><td>Contribution frequency interval.</td></tr>
+      <tr><td>total_cycles</td><td>INTEGER</td><td>NOT NULL, CHECK (&gt;= 2)</td><td>Total planned cycles (= member count).</td></tr>
+      <tr><td>payout_rule</td><td>VARCHAR(32)</td><td>DEFAULT 'JOIN_ORDER'</td><td>LOTTERY, JOIN_ORDER, or AUCTION.</td></tr>
+      <tr><td>status</td><td>VARCHAR(16)</td><td>DEFAULT 'ACTIVE'</td><td>ACTIVE, FROZEN, or COMPLETED.</td></tr>
+      <tr><td>start_date</td><td>DATE</td><td>NOT NULL</td><td>Official commencement date.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Table: Membership</h3>
+  <table>
+    <thead>
+      <tr><th>Column</th><th>Data Type</th><th>Constraints</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>id</td><td>UUID</td><td>PRIMARY KEY</td><td>Unique membership identifier.</td></tr>
+      <tr><td>user_id</td><td>UUID</td><td>FOREIGN KEY &rarr; User(id), ON DELETE RESTRICT</td><td>Member user account.</td></tr>
+      <tr><td>group_id</td><td>UUID</td><td>FOREIGN KEY &rarr; EqubGroup(id), ON DELETE RESTRICT</td><td>Equb group ID.</td></tr>
+      <tr><td>role_in_group</td><td>VARCHAR(16)</td><td>DEFAULT 'MEMBER'</td><td>OWNER, TREASURER, MANAGER, MEMBER.</td></tr>
+      <tr><td>payout_position</td><td>INTEGER</td><td>CHECK (&gt; 0)</td><td>Assigned cycle for payout receipt.</td></tr>
+      <tr><td>status</td><td>VARCHAR(16)</td><td>DEFAULT 'ACTIVE'</td><td>ACTIVE, SUSPENDED, COMPLETED.</td></tr>
+      <tr><td>joined_at</td><td>TIMESTAMPTZ</td><td>DEFAULT NOW()</td><td>Date member joined group.</td></tr>
+    </tbody>
+  </table>
+  <p><em>Constraint: UNIQUE (user_id, group_id) — prevents duplicate memberships.</em></p>
+
+  <h3>Table: Cycle</h3>
+  <table>
+    <thead>
+      <tr><th>Column</th><th>Data Type</th><th>Constraints</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>id</td><td>UUID</td><td>PRIMARY KEY</td><td>Unique cycle identifier.</td></tr>
+      <tr><td>group_id</td><td>UUID</td><td>FOREIGN KEY &rarr; EqubGroup(id), ON DELETE CASCADE</td><td>Associated Equb group.</td></tr>
+      <tr><td>cycle_number</td><td>INTEGER</td><td>NOT NULL</td><td>Sequential round number (1..N).</td></tr>
+      <tr><td>due_date</td><td>DATE</td><td>NOT NULL</td><td>Deadline for member contributions.</td></tr>
+      <tr><td>payout_date</td><td>DATE</td><td>NOT NULL</td><td>Scheduled payout disbursement date.</td></tr>
+      <tr><td>status</td><td>VARCHAR(16)</td><td>DEFAULT 'PENDING'</td><td>PENDING, OPEN, RECONCILED, CLOSED.</td></tr>
+    </tbody>
+  </table>
+  <p><em>Constraint: UNIQUE (group_id, cycle_number) — prevents duplicate cycle indices.</em></p>
+
+  <h3>Table: Contribution</h3>
+  <table>
+    <thead>
+      <tr><th>Column</th><th>Data Type</th><th>Constraints</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>id</td><td>UUID</td><td>PRIMARY KEY</td><td>Unique contribution record ID.</td></tr>
+      <tr><td>membership_id</td><td>UUID</td><td>FOREIGN KEY &rarr; Membership(id), ON DELETE RESTRICT</td><td>Contributing member.</td></tr>
+      <tr><td>cycle_id</td><td>UUID</td><td>FOREIGN KEY &rarr; Cycle(id), ON DELETE RESTRICT</td><td>Target contribution cycle.</td></tr>
+      <tr><td>amount</td><td>BIGINT</td><td>NOT NULL, CHECK (&gt; 0)</td><td>Recorded payment in minor units.</td></tr>
+      <tr><td>payment_method</td><td>VARCHAR(32)</td><td>NOT NULL</td><td>CASH, TELEBIRR, CBE_BIRR, BANK, OTHER.</td></tr>
+      <tr><td>reference_number</td><td>VARCHAR(128)</td><td>NULL</td><td>External payment receipt or TX code.</td></tr>
+      <tr><td>status</td><td>VARCHAR(16)</td><td>DEFAULT 'PAID'</td><td>PAID, PARTIAL, DISPUTED, ADJUSTED.</td></tr>
+      <tr><td>recorded_by_id</td><td>UUID</td><td>FOREIGN KEY &rarr; User(id), ON DELETE RESTRICT</td><td>Acting Treasurer / Admin ID.</td></tr>
+      <tr><td>recorded_at</td><td>TIMESTAMPTZ</td><td>DEFAULT NOW()</td><td>Exact entry timestamp.</td></tr>
+    </tbody>
+  </table>
+  <p><em>Index: UNIQUE (membership_id, cycle_id, reference_number) WHERE reference_number IS NOT NULL.</em></p>
+
+  <h3>Table: Adjustment</h3>
+  <table>
+    <thead>
+      <tr><th>Column</th><th>Data Type</th><th>Constraints</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>id</td><td>UUID</td><td>PRIMARY KEY</td><td>Unique adjustment record ID.</td></tr>
+      <tr><td>contribution_id</td><td>UUID</td><td>FOREIGN KEY &rarr; Contribution(id), ON DELETE RESTRICT</td><td>Parent erroneous contribution.</td></tr>
+      <tr><td>amount_delta</td><td>BIGINT</td><td>NOT NULL</td><td>Signed difference in minor units (+/-).</td></tr>
+      <tr><td>reason</td><td>TEXT</td><td>NOT NULL</td><td>Auditable justification for change.</td></tr>
+      <tr><td>created_by_id</td><td>UUID</td><td>FOREIGN KEY &rarr; User(id), ON DELETE RESTRICT</td><td>Authorizing Treasurer / Admin.</td></tr>
+      <tr><td>created_at</td><td>TIMESTAMPTZ</td><td>DEFAULT NOW()</td><td>Timestamp of adjustment.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Table: Payout</h3>
+  <table>
+    <thead>
+      <tr><th>Column</th><th>Data Type</th><th>Constraints</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>id</td><td>UUID</td><td>PRIMARY KEY</td><td>Unique payout ID.</td></tr>
+      <tr><td>cycle_id</td><td>UUID</td><td>UNIQUE, FOREIGN KEY &rarr; Cycle(id), ON DELETE RESTRICT</td><td>One payout per cycle.</td></tr>
+      <tr><td>recipient_id</td><td>UUID</td><td>FOREIGN KEY &rarr; Membership(id), ON DELETE RESTRICT</td><td>Beneficiary member.</td></tr>
+      <tr><td>amount</td><td>BIGINT</td><td>NOT NULL, CHECK (&gt; 0)</td><td>Total pooled amount disbursed.</td></tr>
+      <tr><td>status</td><td>VARCHAR(24)</td><td>DEFAULT 'SCHEDULED'</td><td>SCHEDULED, PENDING_APPROVAL, APPROVED, DISBURSED.</td></tr>
+      <tr><td>approver_1_id</td><td>UUID</td><td>NULL, FOREIGN KEY &rarr; User(id)</td><td>First dual-control approver (Treasurer).</td></tr>
+      <tr><td>approver_2_id</td><td>UUID</td><td>NULL, FOREIGN KEY &rarr; User(id)</td><td>Second dual-control approver (Admin).</td></tr>
+      <tr><td>disbursed_at</td><td>TIMESTAMPTZ</td><td>NULL</td><td>Actual disbursement confirmation time.</td></tr>
+    </tbody>
+  </table>
+  <p><em>Constraint: CHECK (approver_1_id != approver_2_id) — enforces dual control.</em></p>
+
+  <h3>Table: AuditLog (Append-Only)</h3>
+  <table>
+    <thead>
+      <tr><th>Column</th><th>Data Type</th><th>Constraints</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>id</td><td>UUID</td><td>PRIMARY KEY</td><td>Unique audit log sequence ID.</td></tr>
+      <tr><td>actor_id</td><td>UUID</td><td>NULL, FOREIGN KEY &rarr; User(id)</td><td>Acting user who executed action.</td></tr>
+      <tr><td>entity_type</td><td>VARCHAR(32)</td><td>NOT NULL</td><td>User, Group, Contribution, Payout, etc.</td></tr>
+      <tr><td>entity_id</td><td>UUID</td><td>NOT NULL</td><td>Target record UUID.</td></tr>
+      <tr><td>action</td><td>VARCHAR(32)</td><td>NOT NULL</td><td>INSERT, UPDATE_STATUS, ADJUST, APPROVE.</td></tr>
+      <tr><td>before_state</td><td>JSONB</td><td>NULL</td><td>Snapshot of data prior to operation.</td></tr>
+      <tr><td>after_state</td><td>JSONB</td><td>NULL</td><td>Snapshot of data post operation.</td></tr>
+      <tr><td>ip_address</td><td>VARCHAR(45)</td><td>NULL</td><td>IPv4 or IPv6 client address.</td></tr>
+      <tr><td>user_agent</td><td>TEXT</td><td>NULL</td><td>Browser / device identification.</td></tr>
+      <tr><td>created_at</td><td>TIMESTAMPTZ</td><td>DEFAULT NOW()</td><td>Immutable creation timestamp.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- SECTION 14: API DESIGN -->
+<div class="page-break-before">
+  <h1>14. API Design and Representative Endpoints</h1>
+
+  <h2>14.1 REST API Standards & Envelope Conventions</h2>
+  <p>
+    The EthioEqub REST API conforms to strict RESTful conventions, using semantic HTTP verbs, predictable resource paths prefixed with <code class="inline">/api/v1</code>, and standardized JSON responses.
+  </p>
+
+  <h3>Success Response Envelope</h3>
+  <pre><code>{
+  "success": true,
+  "data": { ... },
+  "meta": {
+    "requestId": "req_88f91a0c4e",
+    "timestamp": "2026-10-24T06:15:30.120Z",
+    "pagination": {
+      "page": 1,
+      "pageSize": 20,
+      "totalRecords": 85,
+      "totalPages": 5
+    }
+  }
+}</code></pre>
+
+  <h3>Error Response Envelope</h3>
+  <pre><code>{
+  "success": false,
+  "error": {
+    "code": "DUPLICATE_REFERENCE",
+    "message": "Payment reference 'TB-9847291048' has already been recorded in this group.",
+    "details": [
+      { "field": "referenceNumber", "issue": "Must be unique within group" }
+    ],
+    "requestId": "req_88f91a0c4e"
+  }
+}</code></pre>
+
+  <h2>14.2 Representative API Endpoint Inventory</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 8%;">Method</th>
+        <th style="width: 32%;">Endpoint Path</th>
+        <th style="width: 25%;">Purpose</th>
+        <th style="width: 15%;">Minimum Role</th>
+        <th style="width: 20%;">Success Code</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code class="inline">POST</code></td>
+        <td>/api/v1/auth/register</td>
+        <td>Register new user account</td>
+        <td>Public</td>
+        <td>201 Created</td>
+      </tr>
+      <tr>
+        <td><code class="inline">POST</code></td>
+        <td>/api/v1/auth/login</td>
+        <td>Authenticate and set session cookie</td>
+        <td>Public</td>
+        <td>200 OK</td>
+      </tr>
+      <tr>
+        <td><code class="inline">POST</code></td>
+        <td>/api/v1/auth/logout</td>
+        <td>Terminate session and clear cookie</td>
+        <td>Authenticated</td>
+        <td>200 OK</td>
+      </tr>
+      <tr>
+        <td><code class="inline">GET</code></td>
+        <td>/api/v1/users/me</td>
+        <td>Fetch authenticated profile</td>
+        <td>Authenticated</td>
+        <td>200 OK</td>
+      </tr>
+      <tr>
+        <td><code class="inline">POST</code></td>
+        <td>/api/v1/groups</td>
+        <td>Create group and generate cycles</td>
+        <td>Authenticated</td>
+        <td>201 Created</td>
+      </tr>
+      <tr>
+        <td><code class="inline">GET</code></td>
+        <td>/api/v1/groups/:id</td>
+        <td>Get group overview and stats</td>
+        <td>Member</td>
+        <td>200 OK</td>
+      </tr>
+      <tr>
+        <td><code class="inline">POST</code></td>
+        <td>/api/v1/groups/:id/members</td>
+        <td>Invite / add member to group</td>
+        <td>Group Owner</td>
+        <td>201 Created</td>
+      </tr>
+      <tr>
+        <td><code class="inline">GET</code></td>
+        <td>/api/v1/groups/:id/cycles</td>
+        <td>List cycles and schedule status</td>
+        <td>Member</td>
+        <td>200 OK</td>
+      </tr>
+      <tr>
+        <td><code class="inline">POST</code></td>
+        <td>/api/v1/groups/:id/contributions</td>
+        <td>Record member contribution</td>
+        <td>Treasurer</td>
+        <td>201 Created</td>
+      </tr>
+      <tr>
+        <td><code class="inline">POST</code></td>
+        <td>/api/v1/contributions/:id/adjustments</td>
+        <td>Post an auditable adjustment</td>
+        <td>Treasurer</td>
+        <td>201 Created</td>
+      </tr>
+      <tr>
+        <td><code class="inline">POST</code></td>
+        <td>/api/v1/payouts/:id/approve</td>
+        <td>Submit dual-control approval</td>
+        <td>Treasurer / Owner</td>
+        <td>200 OK</td>
+      </tr>
+      <tr>
+        <td><code class="inline">POST</code></td>
+        <td>/api/v1/contributions/:id/disputes</td>
+        <td>File a dispute on a record</td>
+        <td>Member</td>
+        <td>201 Created</td>
+      </tr>
+      <tr>
+        <td><code class="inline">GET</code></td>
+        <td>/api/v1/groups/:id/reports/ledger.csv</td>
+        <td>Export group CSV transaction ledger</td>
+        <td>Treasurer</td>
+        <td>200 OK</td>
+      </tr>
+      <tr>
+        <td><code class="inline">GET</code></td>
+        <td>/api/v1/groups/:id/audit-logs</td>
+        <td>Inspect immutable audit records</td>
+        <td>Group Owner</td>
+        <td>200 OK</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>14.3 Sample API Request and Response Walkthroughs</h2>
+
+  <h3>Endpoint: POST /api/v1/groups/:id/contributions</h3>
+  <p><strong>Request Headers:</strong> <code class="inline">Content-Type: application/json</code>, <code class="inline">Cookie: session_id=...</code></p>
+  <pre><code>// POST Payload
+{
+  "membershipId": "c4b12f67-8e9a-4d22-92b0-817a5e8c1b22",
+  "cycleId": "e1f82c33-912b-4566-b33a-112233445566",
+  "amountMinorUnits": 1000000,          // 10,000.00 ETB
+  "paymentMethod": "TELEBIRR",
+  "referenceNumber": "TB-9847291048",
+  "notes": "Paid at Bole branch retail agent"
+}</code></pre>
+  <pre><code>// 201 Created Response
+{
+  "success": true,
+  "data": {
+    "contributionId": "7a8b9c0d-1e2f-3a4b-5c6d-7e8f9a0b1c2d",
+    "memberFullName": "Abebe Kebede",
+    "cycleNumber": 4,
+    "amountFormatted": "10,000.00 ETB",
+    "paymentMethod": "TELEBIRR",
+    "referenceNumber": "TB-9847291048",
+    "recordedAt": "2026-10-24T06:20:00Z",
+    "status": "PAID",
+    "remainingMemberBalanceMinorUnits": 0
+  },
+  "meta": { "requestId": "req_88f91a0c4e" }
+}</code></pre>
+</div>
+
+<!-- SECTION 15: UI/UX DESIGN PLAN -->
+<div class="page-break-before">
+  <h1>15. UI/UX Design Plan and Screen Inventory</h1>
+
+  <h2>15.1 Design Philosophy & Visual Principles</h2>
+  <ul>
+    <li><strong>Clarity Over Decoration:</strong> Financial interfaces must convey unambiguous trust, precise decimal alignment, and clear status badges.</li>
+    <li><strong>Mobile-First Usability:</strong> Over 85% of Ethiopian Equb participants access internet services via smartphones. All member journeys are designed for single-hand mobile operation (touch targets ≥ 48px).</li>
+    <li><strong>High Contrast & Accessibility:</strong> Complies with WCAG 2.1 AA contrast requirements to ensure legibility in bright sunlight.</li>
+    <li><strong>Zero Ambiguity Financial Badges:</strong> Every financial state is visually distinct:
+      <span class="badge-status badge-must">LATE / DELINQUENT</span>
+      <span class="badge-status badge-should">PENDING / DUE</span>
+      <span class="badge-status badge-could">CONFIRMED / PAID</span>
+    </li>
+  </ul>
+
+  <h2>15.2 Screen Inventory (S-01 through S-13)</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 10%;">ID</th>
+        <th style="width: 25%;">Screen Title</th>
+        <th style="width: 20%;">Target Audience</th>
+        <th style="width: 45%;">Key UI Components & Capabilities</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>S-01</strong></td>
+        <td>Authentication & Password Reset</td>
+        <td>All Users</td>
+        <td>Clean card layout, tabs for Login/Register, password strength indicator, accessible error toasts.</td>
+      </tr>
+      <tr>
+        <td><strong>S-02</strong></td>
+        <td>Member Personal Dashboard</td>
+        <td>Equb Member</td>
+        <td>Next due date alert card, balance overview, upcoming payout countdown, recent payment history table.</td>
+      </tr>
+      <tr>
+        <td><strong>S-03</strong></td>
+        <td>Group Executive Dashboard</td>
+        <td>Owner / Treasurer</td>
+        <td>KPI metric tiles (Total Collected, Delinquent Amount, Solvency Ratio), cycle progress bar, fast-action toolbar.</td>
+      </tr>
+      <tr>
+        <td><strong>S-04</strong></td>
+        <td>Group Configuration & Rules</td>
+        <td>Group Owner</td>
+        <td>Multi-step wizard: Name, frequency, contribution amount, cycle schedule preview, rule toggles.</td>
+      </tr>
+      <tr>
+        <td><strong>S-05</strong></td>
+        <td>Member Roster & Roles</td>
+        <td>Owner / Manager</td>
+        <td>Searchable table with member roles, payout positions, invitation dispatch modal, member status toggles.</td>
+      </tr>
+      <tr>
+        <td><strong>S-06</strong></td>
+        <td>Contribution Recording Terminal</td>
+        <td>Treasurer</td>
+        <td>Optimized fast-entry form: Member autocomplete, amount prefill, payment method tabs, reference validator.</td>
+      </tr>
+      <tr>
+        <td><strong>S-07</strong></td>
+        <td>Member Contribution History</td>
+        <td>Member / Treasurer</td>
+        <td>Chronological ledger breakdown per cycle, reference verification links, dispute button, PDF download.</td>
+      </tr>
+      <tr>
+        <td><strong>S-08</strong></td>
+        <td>Payout Schedule & Rotation</td>
+        <td>All Group Users</td>
+        <td>Visual timeline showing cycle numbers, scheduled payout dates, beneficiary member names, and completion badges.</td>
+      </tr>
+      <tr>
+        <td><strong>S-09</strong></td>
+        <td>Dual Payout Approval Gateway</td>
+        <td>Treasurer / Owner</td>
+        <td>Dual signature modal showing Approver 1 and Approver 2 status badges, pool solvency check, authorization button.</td>
+      </tr>
+      <tr>
+        <td><strong>S-10</strong></td>
+        <td>Financial Reporting & Exports</td>
+        <td>Treasurer / Owner</td>
+        <td>Date-range filter, breakdown by payment method, one-click CSV export and print-ready PDF balance sheet.</td>
+      </tr>
+      <tr>
+        <td><strong>S-11</strong></td>
+        <td>Immutable Audit Log Explorer</td>
+        <td>Group Owner / Auditor</td>
+        <td>Filterable log table: Timestamp, Actor, Action, Entity, before/after JSON visual diff modal.</td>
+      </tr>
+      <tr>
+        <td><strong>S-12</strong></td>
+        <td>Dispute Resolution Center</td>
+        <td>Member / Owner</td>
+        <td>Filing form with file attachment simulation, admin resolution notes, and trigger adjustment action.</td>
+      </tr>
+      <tr>
+        <td><strong>S-13</strong></td>
+        <td>Profile & Security Settings</td>
+        <td>All Users</td>
+        <td>Contact update, password modification, session activity log, and optional TOTP 2FA setup.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>15.3 Core Wireframe Layout Concepts</h2>
+  <h3>Wireframe: S-02 Member Dashboard</h3>
+  <div class="ascii-diagram">
++-------------------------------------------------------------------------------+
+| [EthioEqub Logo]      Merkato Merchants Equb (Cycle 4/20)     [User: Abebe v] |
++-------------------------------------------------------------------------------+
+|                                                                               |
+|  +--------------------------+  +--------------------------+  +-------------+  |
+|  | NEXT PAYMENT DUE         |  | YOUR CURRENT BALANCE     |  | YOUR PAYOUT |  |
+|  | 10,000.00 ETB            |  | 0.00 ETB (All Settled)   |  | Cycle #8    |  |
+|  | Due in: 3 Days (Oct 27)  |  | [Status: GOOD STANDING]  |  | (~6 Weeks)  |  |
+|  +--------------------------+  +--------------------------+  +-------------+  |
+|                                                                               |
+|  +-------------------------------------------------------------------------+  |
+|  | RECENT CONTRIBUTIONS                       [Download Official Statement]|  |
+|  | Date       | Cycle | Method    | Reference Number  | Amount    | Status |  |
+|  |------------+-------+-----------+-------------------+-----------+--------|  |
+|  | 2026-10-20 | #3    | TELEBIRR  | TB-9847291048     | 10,000 ETB| [PAID] |  |
+|  | 2026-10-13 | #2    | CBE_BIRR  | CBE-44019284      | 10,000 ETB| [PAID] |  |
+|  | 2026-10-06 | #1    | CASH      | RCPT-0042         | 10,000 ETB| [PAID] |  |
+|  +-------------------------------------------------------------------------+  |
++-------------------------------------------------------------------------------+
+  </div>
+</div>
+
+<!-- SECTION 16: SECURITY & AUDIT -->
+<div class="page-break-before">
+  <h1>16. Authentication, Authorization, Privacy, Security, and Audit Requirements</h1>
+
+  <h2>16.1 Threat Modeling & Countermeasure Framework</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 25%;">Threat Vector</th>
+        <th style="width: 35%;">Potential Exploitation / Impact</th>
+        <th style="width: 40%;">Implemented Countermeasure</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Credential Stuffing & Brute Force</strong></td>
+        <td>Automated scripts attempting dictionary passwords against user logins.</td>
+        <td>Express rate-limiting (maximum 5 failed login attempts per 15 minutes per IP); strong password entropy requirements; Argon2id hashing.</td>
+      </tr>
+      <tr>
+        <td><strong>Cross-Site Scripting (XSS)</strong></td>
+        <td>Malicious scripts injected via notes stealing auth tokens from LocalStorage.</td>
+        <td>Auth tokens stored strictly in <code class="inline">HttpOnly, Secure, SameSite=Lax</code> cookies inaccessible to JavaScript; React auto-escaping; Helmet CSP headers.</td>
+      </tr>
+      <tr>
+        <td><strong>Cross-Site Request Forgery (CSRF)</strong></td>
+        <td>Forged requests triggering unauthorized contribution or payout actions.</td>
+        <td>SameSite cookie flags; custom Anti-CSRF header verification (<code class="inline">x-requested-with</code>) on all state-changing mutating verbs.</td>
+      </tr>
+      <tr>
+        <td><strong>Broken Object-Level AuthZ (BOLA / IDOR)</strong></td>
+        <td>User altering URL parameter (e.g., <code class="inline">/groups/999</code>) to view or edit another group.</td>
+        <td>Middleware verifies that authenticated user possesses explicit active Membership in target group for every request.</td>
+      </tr>
+      <tr>
+        <td><strong>SQL Injection</strong></td>
+        <td>Unsanitized search fields altering backend SQL statements.</td>
+        <td>Prisma ORM generates 100% parameterized SQL queries; manual raw query strings prohibited in production code.</td>
+      </tr>
+      <tr>
+        <td><strong>Ledger Tampering by Rogue Treasurer</strong></td>
+        <td>Treasurer altering past contribution figures to conceal cash shortfalls.</td>
+        <td>Database tables enforce append-only policies; financial mutations executed strictly via audited Adjustment records; zero in-place updates.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>16.2 Cryptographic & Session Specifications</h2>
+  <ul>
+    <li><strong>Password Storage:</strong> Salted and hashed using Argon2id with 64 MB memory cost, 3 iterations, and parallelism of 1 (fallback: bcrypt with 12 salt rounds).</li>
+    <li><strong>Session Lifecycle:</strong> Session tokens are cryptographically random 256-bit entropy strings with a 7-day expiration sliding window. Inactive sessions terminate after 24 hours.</li>
+    <li><strong>Audit Log Immutability:</strong> The <code class="inline">AuditLog</code> table has no application-level update or delete endpoints. A PostgreSQL trigger can optionally raise an exception if an <code class="inline">UPDATE</code> or <code class="inline">DELETE</code> SQL statement is attempted on this table.</li>
+  </ul>
+</div>
+
+<!-- SECTION 17: FINANCIAL TRANSACTION INTEGRITY -->
+<div class="page-break-before">
+  <h1>17. Financial Transaction Integrity, Reconciliation, and Reporting</h1>
+
+  <h2>17.1 Mathematical Precision Standards</h2>
+  <p>
+    Financial applications must never suffer from IEEE-754 floating-point rounding errors (where <code class="inline">0.1 + 0.2 = 0.30000000000000004</code>). EthioEqub mandates:
+  </p>
+  <ul>
+    <li><strong>Storage:</strong> All currency amounts are stored as 64-bit signed integers (<code class="inline">BIGINT</code> in PostgreSQL) representing minor currency units (santim / cents).</li>
+    <li><strong>Formulas:</strong>
+      $$\text{Stored Santim} = \text{ETB Amount} \times 100$$
+      $$\text{Displayed ETB} = \frac{\text{Stored Santim}}{100.00}$$
+    </li>
+    <li><strong>Arithmetic:</strong> All additions, subtractions, and balance summations occur strictly on integer values. Division is restricted to final payout split distributions with explicit integer remainder allocation.</li>
+  </ul>
+
+  <h2>17.2 Transactional Atomicity via ACID Guarantees</h2>
+  <p>
+    Every financial event spanning multiple records (e.g., recording a contribution, updating the cycle running balance, and inserting an audit log entry) is wrapped in a PostgreSQL atomic transaction:
+  </p>
+  <pre><code>// Atomic Financial Execution Pattern (Prisma Transaction)
+await prisma.$transaction(async (tx) => {
+  // 1. Verify group is active and not frozen
+  const group = await tx.equbGroup.findUniqueOrThrow({ where: { id: groupId } });
+  if (group.status !== 'ACTIVE') throw new DomainError('GROUP_FROZEN');
+
+  // 2. Prevent duplicate reference within group
+  if (referenceNumber) {
+    const existing = await tx.contribution.findFirst({
+      where: { groupId, paymentMethod, referenceNumber }
+    });
+    if (existing) throw new ConflictError('DUPLICATE_PAYMENT_REFERENCE');
+  }
+
+  // 3. Persist contribution record
+  const contribution = await tx.contribution.create({
+    data: { membershipId, cycleId, amountMinorUnits, paymentMethod, referenceNumber, recordedById }
+  });
+
+  // 4. Persist immutable audit log entry
+  await tx.auditLog.create({
+    data: {
+      actorId: recordedById,
+      entityType: 'Contribution',
+      entityId: contribution.id,
+      action: 'RECORD_CONTRIBUTION',
+      afterState: contribution,
+      ipAddress, userAgent
+    }
+  });
+
+  return contribution;
+});</code></pre>
+
+  <h2>17.3 Automated Pool Reconciliation Invariant</h2>
+  <p>
+    At the conclusion of every cycle, the system validates the fundamental Equb conservation law:
+  </p>
+  <div class="callout rule">
+    <div class="callout-title">The Equb Invariant Equation</div>
+    $$\sum_{i=1}^{M} \text{Contributions}_c(i) + \sum \text{Adjustments}_c = \text{Payout}_c + \text{Carried Reserve}_c$$
+    Where $M$ is total group membership and $c$ is the current cycle index. If the calculated delta does not equal zero, the system flags a reconciliation variance, preventing cycle closure until rectified by the Treasurer.
+  </div>
+</div>
+
+<!-- SECTION 18: NOTIFICATION & PAYMENT STRATEGY -->
+<div class="page-break-before">
+  <h1>18. Notification and Payment Integration Strategy</h1>
+
+  <h2>18.1 Payment Reality in Ethiopia</h2>
+  <p>
+    In contemporary Ethiopia, informal savings groups transact across four primary channels:
+  </p>
+  <ol>
+    <li><strong>Telebirr (Ethio Telecom):</strong> The dominant mobile money service in Ethiopia, ubiquitous among urban and rural merchants.</li>
+    <li><strong>CBE Birr & Commercial Bank of Ethiopia (CBE):</strong> Mobile banking apps and branch account-to-account transfers.</li>
+    <li><strong>Private Bank Mobile Apps:</strong> Awash Bank, Dashen Bank (Amole), Bank of Abyssinia.</li>
+    <li><strong>Physical Cash:</strong> In-person cash handoffs during traditional weekly coffee meetings.</li>
+  </ol>
+
+  <h2>18.2 Version 1.0 vs. Future Roadmap Architecture</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 20%;">Dimension</th>
+        <th style="width: 40%;">Version 1.0 Architecture (Current Scope)</th>
+        <th style="width: 40%;">Version 2.0 Roadmap (Future Evolution)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Payment Execution</strong></td>
+        <td>Manual entry by Treasurer with mandatory transaction reference capture. Zero direct custody or fund movement.</td>
+        <td>Direct API integration with Telebirr Merchant Gateway and CBE Open Banking API for automated webhook verification.</td>
+      </tr>
+      <tr>
+        <td><strong>Verification Model</strong></td>
+        <td>Dual reconciliation: Treasurer verifies SMS receipt on physical phone, inputs reference code into EthioEqub ledger.</td>
+        <td>Server-to-server webhook confirmation instantly reconciling payments without manual intervention.</td>
+      </tr>
+      <tr>
+        <td><strong>Simulated Data Rule</strong></td>
+        <td>Any demo transactions, seeded members, or test records must carry explicit <code class="inline">is_simulated: true</code> flags and UI badges.</td>
+        <td>Strict sandbox test environments partitioned from live production ledgers.</td>
+      </tr>
+      <tr>
+        <td><strong>Notifications</strong></td>
+        <td>Transactional Email (Resend / SendGrid) + in-app notification center. SMS provider decoupled via adapter interface.</td>
+        <td>Direct SMS text dispatch via Afromessage / Ethio Telecom SMS aggregator API.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- SECTION 19: VALIDATION & ERROR HANDLING -->
+<div>
+  <h1>19. Validation Rules and Error-Handling Strategy</h1>
+
+  <h2>19.1 Centralized Zod Schema Validation</h2>
+  <p>
+    Every incoming API payload is parsed and strictly validated against strongly typed Zod schemas prior to reaching domain controllers. Unrecognized fields are stripped (<code class="inline">strip()</code>) to prevent parameter injection.
+  </p>
+  <pre><code>// Example Zod Schema: Group Creation DTO
+export const CreateGroupSchema = z.object({
+  name: z.string().min(3, "Group name must be at least 3 characters").max(100),
+  description: z.string().max(500).optional(),
+  contributionAmountMinorUnits: z.number().int().positive("Amount must be a positive integer"),
+  frequency: z.enum(["DAILY", "WEEKLY", "MONTHLY"]),
+  totalCycles: z.number().int().min(2, "Equb requires at least 2 cycles/members").max(100),
+  startDate: z.string().datetime().refine((date) => new Date(date) >= new Date(), {
+    message: "Start date must be today or in the future"
+  }),
+  payoutRule: z.enum(["JOIN_ORDER", "LOTTERY", "AUCTION"]).default("JOIN_ORDER")
+});</code></pre>
+
+  <h2>19.2 Standardized HTTP Status Code Mapping</h2>
+  <table>
+    <thead>
+      <tr><th style="width: 15%;">HTTP Code</th><th style="width: 25%;">Error Code</th><th style="width: 60%;">Trigger Condition & Meaning</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>400 Bad Request</td><td>VALIDATION_ERROR</td><td>Request payload violates Zod schema (e.g. negative amount, invalid email).</td></tr>
+      <tr><td>401 Unauthorized</td><td>AUTH_REQUIRED</td><td>Missing, expired, or invalid session cookie.</td></tr>
+      <tr><td>403 Forbidden</td><td>FORBIDDEN_ROLE</td><td>User lacks necessary role permissions (e.g., Member attempting to record payment).</td></tr>
+      <tr><td>404 Not Found</td><td>RESOURCE_NOT_FOUND</td><td>Specified group, cycle, or user ID does not exist in the database.</td></tr>
+      <tr><td>409 Conflict</td><td>DUPLICATE_REFERENCE</td><td>Payment reference already recorded within group.</td></tr>
+      <tr><td>422 Unprocessable</td><td>BUSINESS_RULE_VIOLATION</td><td>Violates Equb invariant (e.g., Approver 1 attempting to act as Approver 2).</td></tr>
+      <tr><td>500 Internal Error</td><td>INTERNAL_SERVER_ERROR</td><td>Unhandled server exception; stack trace suppressed in production response.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- SECTION 20: TESTING STRATEGY -->
+<div class="page-break-before">
+  <h1>20. Testing Strategy and Acceptance Criteria</h1>
+
+  <h2>20.1 Test Pyramid Methodology</h2>
+  <ul>
+    <li><strong>Unit Tests (60%):</strong> Isolated verification of domain business logic: cycle calculation algorithms, minor-unit currency conversions, late balance determination, and Zod validation rules.</li>
+    <li><strong>Integration Tests (30%):</strong> Testing API endpoints against a dedicated PostgreSQL test container: testing authentication flows, database transactions, dual-control payout constraints, and duplicate reference rejections.</li>
+    <li><strong>End-to-End (E2E) Sanity Tests (10%):</strong> Full user journey verification using Playwright: User signs up &rarr; Creates Group &rarr; Records Contribution &rarr; Approves Payout &rarr; Exports CSV.</li>
+  </ul>
+
+  <h2>20.2 Formal Acceptance Criteria Register</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 12%;">ID</th>
+        <th style="width: 38%;">Test Scenario</th>
+        <th style="width: 50%;">Expected Verification Result</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>AC-01</strong></td>
+        <td>Group Creation Schedule Integrity</td>
+        <td>Creating a group with 10 members and weekly frequency generates exactly 10 cycles, sequentially dated 7 days apart without gaps.</td>
+      </tr>
+      <tr>
+        <td><strong>AC-02</strong></td>
+        <td>Duplicate Payment Reference Rejection</td>
+        <td>Submitting a second contribution with identical (group, paymentMethod, referenceNumber) is rejected with HTTP 409 Conflict.</td>
+      </tr>
+      <tr>
+        <td><strong>AC-03</strong></td>
+        <td>Dual-Control Payout Rejection on Self-Approval</td>
+        <td>Attempting to submit both Approver 1 and Approver 2 from the same authenticated user ID fails with HTTP 422 Business Rule Violation.</td>
+      </tr>
+      <tr>
+        <td><strong>AC-04</strong></td>
+        <td>Tenant Isolation on Member Statements</td>
+        <td>Member A querying <code class="inline">/api/v1/users/me/contributions</code> receives only their personal payment records and cannot access Member B's data.</td>
+      </tr>
+      <tr>
+        <td><strong>AC-05</strong></td>
+        <td>Atomic Rollback on Transaction Failure</td>
+        <td>If an error occurs while writing an AuditLog row during contribution creation, the entire database transaction aborts; zero orphaned records created.</td>
+      </tr>
+      <tr>
+        <td><strong>AC-06</strong></td>
+        <td>Adjustment Audit Preservation</td>
+        <td>Submitting an adjustment modifies the net computed balance but leaves the original contribution row intact with an associated adjustment history.</td>
+      </tr>
+      <tr>
+        <td><strong>AC-07</strong></td>
+        <td>CSV Ledger Export Hygiene</td>
+        <td>Exported CSV ledger files encode all strings safely to prevent CSV formula injection attacks (prepending single quotes to <code class="inline">=, +, -, @</code>).</td>
+      </tr>
+      <tr>
+        <td><strong>AC-08</strong></td>
+        <td>Session Revocation on Logout</td>
+        <td>Calling <code class="inline">POST /api/v1/auth/logout</code> invalidates the session server-side; subsequent requests using the old cookie return HTTP 401 Unauthorized.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- SECTION 21: DEVELOPMENT PHASES -->
+<div class="page-break-before">
+  <h1>21. Development Phases and Milestones</h1>
+  <p>
+    To ensure professional engineering quality, disciplined progress, and thorough student learning, the project follows 12 strictly sequenced phases. Progression to each subsequent phase requires explicit stakeholder confirmation via the command <code class="inline">next</code>.
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 10%;">Phase</th>
+        <th style="width: 30%;">Phase Name & Focus</th>
+        <th style="width: 42%;">Key Deliverables & Verification Checkpoints</th>
+        <th style="width: 18%;">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Phase 1</strong></td>
+        <td>Project Documentation & Architecture Baseline</td>
+        <td>Publish complete 26-section PRTDD document, compile print-ready PDF, verify completeness.</td>
+        <td><strong>CURRENT PHASE</strong></td>
+      </tr>
+      <tr>
+        <td><strong>Phase 2</strong></td>
+        <td>Requirements Review & Decision Finalization</td>
+        <td>Review PRTDD with user, resolve open architectural questions (2FA, Amharic i18n, hosting).</td>
+        <td>Pending <code class="inline">next</code></td>
+      </tr>
+      <tr>
+        <td><strong>Phase 3</strong></td>
+        <td>Environment Inspection & Prerequisite Verification</td>
+        <td>Inspect developer workstation (Node, npm, Git, PostgreSQL), execute safe read-only diagnostics.</td>
+        <td>Pending <code class="inline">next</code></td>
+      </tr>
+      <tr>
+        <td><strong>Phase 4</strong></td>
+        <td>Project Skeleton & Structure Creation</td>
+        <td>Generate approved root directory structure, initial Git repo, and module boundaries.</td>
+        <td>Pending <code class="inline">next</code></td>
+      </tr>
+      <tr>
+        <td><strong>Phase 5</strong></td>
+        <td>Architecture & Folder Walkthrough</td>
+        <td>Detailed explanation of every folder, configuration file, and architectural pattern for student.</td>
+        <td>Pending <code class="inline">next</code></td>
+      </tr>
+      <tr>
+        <td><strong>Phase 6</strong></td>
+        <td>App & Database Configuration</td>
+        <td>Set up environment variables, TypeScript configs, ESLint/Prettier, Prisma client, DB connection.</td>
+        <td>Pending <code class="inline">next</code></td>
+      </tr>
+      <tr>
+        <td><strong>Phase 7</strong></td>
+        <td>UI/UX Incremental Implementation</td>
+        <td>Build responsive Tailwind components, layout shells, dashboard cards, navigation bars.</td>
+        <td>Pending <code class="inline">next</code></td>
+      </tr>
+      <tr>
+        <td><strong>Phase 8</strong></td>
+        <td>Database Schema, Migrations & Seeds</td>
+        <td>Execute Prisma migrations, verify PostgreSQL tables and constraints, seed realistic demo data.</td>
+        <td>Pending <code class="inline">next</code></td>
+      </tr>
+      <tr>
+        <td><strong>Phase 9</strong></td>
+        <td>Authentication & RBAC Implementation</td>
+        <td>Implement registration, login, Argon2id hashing, secure cookie sessions, role middleware.</td>
+        <td>Pending <code class="inline">next</code></td>
+      </tr>
+      <tr>
+        <td><strong>Phase 10</strong></td>
+        <td>Core Business Features Implementation</td>
+        <td>Build Equb group management, contribution recording, dual-control payouts, adjustments, reports.</td>
+        <td>Pending <code class="inline">next</code></td>
+      </tr>
+      <tr>
+        <td><strong>Phase 11</strong></td>
+        <td>Automated Testing & QA Verification</td>
+        <td>Run Vitest unit tests, Supertest API integration tests, and manual verification checklist.</td>
+        <td>Pending <code class="inline">next</code></td>
+      </tr>
+      <tr>
+        <td><strong>Phase 12</strong></td>
+        <td>Security Audit, Deployment & Final Defense</td>
+        <td>Execute security review, deploy API to cloud, connect live database, prepare defense demo.</td>
+        <td>Pending <code class="inline">next</code></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- SECTION 22: RISKS & ASSUMPTIONS -->
+<div class="page-break-before">
+  <h1>22. Risks, Assumptions, and Mitigation Strategies</h1>
+
+  <h2>22.1 Risk Assessment Matrix</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 22%;">Identified Risk</th>
+        <th style="width: 12%;">Severity</th>
+        <th style="width: 12%;">Likelihood</th>
+        <th style="width: 54%;">Mitigation Strategy</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Scope Creep into Live Banking</strong></td>
+        <td>HIGH</td>
+        <td>HIGH</td>
+        <td>Strictly enforce v1 boundary: EthioEqub is a verifiable record and audit ledger, not a licensed payment gateway or money transmitter.</td>
+      </tr>
+      <tr>
+        <td><strong>Floating-Point Precision Loss</strong></td>
+        <td>CRITICAL</td>
+        <td>MEDIUM</td>
+        <td>Mandate integer minor units (santim) across all database columns, backend models, and calculations. Enforce via unit tests.</td>
+      </tr>
+      <tr>
+        <td><strong>SMS Gateway Account Rejection</strong></td>
+        <td>MEDIUM</td>
+        <td>HIGH</td>
+        <td>Implement adapter design pattern: Transactional email (Resend) acts as primary verified notification engine; SMS adapter is pluggable.</td>
+      </tr>
+      <tr>
+        <td><strong>Student Overwhelm / Knowledge Gaps</strong></td>
+        <td>MEDIUM</td>
+        <td>MEDIUM</td>
+        <td>Enforce 10-step pedagogical delivery format: provide exact commands, explain all technical concepts, and verify before moving forward.</td>
+      </tr>
+      <tr>
+        <td><strong>Rogue Ledger Modifications</strong></td>
+        <td>HIGH</td>
+        <td>LOW</td>
+        <td>Prohibit in-place SQL updates and deletes on financial tables. Require adjustment rows and enforce append-only audit logging.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>22.2 Core Assumptions & Finalized Stakeholder Decisions</h2>
+  <h3>Verified Assumptions:</h3>
+  <ul>
+    <li>The developer has access to a modern workstation with Linux, macOS, or Windows WSL2.</li>
+    <li>Cloud deployment will utilize reliable free-tier services (Render, Vercel, Neon PostgreSQL).</li>
+    <li>Primary target users possess basic smartphone literacy and access to Telegram or web browsers.</li>
+  </ul>
+
+  <h3>Finalized Stakeholder Decisions (Phase 2 Baseline Sign-Off):</h3>
+  <div class="callout rule">
+    <div class="callout-title">Agreed Architecture & Policy Baseline</div>
+    <ol style="margin: 0; padding-left: 20px;">
+      <li><strong>UI Language Strategy:</strong> English-first UI with a clean, decoupled i18n localization dictionary architecture. Strings are externalized so full Amharic (አማርኛ) translation can be activated seamlessly in Phase 10 without JSX refactoring.</li>
+      <li><strong>Dual-Control Payout Governance:</strong> Mandatory dual-control approval (Treasurer + Owner/Manager) for standard groups. For small informal or family groups (&lt; 5 members), the Group Owner may configure single-approver payout disbursement at group creation.</li>
+      <li><strong>Guarantor (Wasa / ዋስ) Requirement:</strong> Configurable per group in bylaws: strictly mandatory for members receiving early payouts (to ensure ongoing post-payout savings discipline), and optional for other cycles.</li>
+      <li><strong>Notification Strategy:</strong> Transactional Email (Resend / SMTP) and an in-app Notification Center for development and academic defense demonstration, backed by a pluggable SMS adapter ready for live Ethiopian SMS gateway credentials.</li>
+    </ol>
+  </div>
+</div>
+
+<!-- SECTION 23: DEPLOYMENT & MAINTENANCE -->
+<div class="page-break-before">
+  <h1>23. Deployment, Backup, Recovery, and Maintenance Plan</h1>
+
+  <h2>23.1 Cloud Deployment Architecture</h2>
+  <ul>
+    <li><strong>Client SPA:</strong> Hosted on Vercel or Netlify global edge network, providing automatic SSL certificate issuance, instant cache invalidation, and seamless continuous deployment from GitHub.</li>
+    <li><strong>Backend API:</strong> Hosted as a managed Node.js container service on Render.com or Railway.app with environment-based configuration, automated health monitoring, and auto-restart capabilities.</li>
+    <li><strong>Database Server:</strong> Managed PostgreSQL on Neon.tech or Supabase, providing serverless connection pooling, point-in-time recovery, and SSL encryption in transit.</li>
+  </ul>
+
+  <h2>23.2 Backup and Disaster Recovery Protocol</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 25%;">Backup Type</th>
+        <th style="width: 25%;">Frequency</th>
+        <th style="width: 25%;">Retention</th>
+        <th style="width: 25%;">Storage Target</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Automated Managed Snapshots</strong></td>
+        <td>Daily (02:00 UTC)</td>
+        <td>7 Rolling Days</td>
+        <td>Neon / Supabase Managed Cloud Storage</td>
+      </tr>
+      <tr>
+        <td><strong>Logical Database Dump (<code class="inline">pg_dump</code>)</strong></td>
+        <td>Weekly (Sunday)</td>
+        <td>30 Days</td>
+        <td>Encrypted Private Object Storage (AWS S3)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout security">
+    <div class="callout-title">Disaster Recovery Targets</div>
+    <strong>Recovery Point Objective (RPO):</strong> Maximum 24 hours of data loss in catastrophic provider failure.
+    <br><strong>Recovery Time Objective (RTO):</strong> System restored to full operation within 4 hours via automated migration scripts.
+  </div>
+</div>
+
+<!-- SECTION 24: INSTALLATION PREREQUISITES -->
+<div>
+  <h1>24. Installation Prerequisites and Developer Environment Setup</h1>
+  <p>
+    The following development toolchain will be verified through non-destructive read-only terminal commands in Phase 3 prior to generating application files:
+  </p>
+  <ul>
+    <li><strong>Node.js (LTS v20+):</strong> Verified via <code class="inline">node -v</code></li>
+    <li><strong>npm Package Manager (v10+):</strong> Verified via <code class="inline">npm -v</code></li>
+    <li><strong>Git Version Control:</strong> Verified via <code class="inline">git --version</code></li>
+    <li><strong>PostgreSQL Client / Service:</strong> Verified via <code class="inline">psql --version</code> (or cloud connection string)</li>
+    <li><strong>Web Browser:</strong> Google Chrome, Mozilla Firefox, or Chromium with DevTools for debugging.</li>
+  </ul>
+</div>
+
+<!-- SECTION 25: FINAL ACCEPTANCE CHECKLIST -->
+<div class="page-break-before">
+  <h1>25. Final Project Acceptance Checklist</h1>
+  <p>
+    Prior to final submission and academic project defense, the project must satisfy every verification checkpoint in this acceptance register:
+  </p>
+  <table>
+    <thead>
+      <tr><th style="width: 10%; text-align: center;">Verified</th><th style="width: 30%;">Category</th><th style="width: 60%;">Acceptance Criteria</th></tr>
+    </thead>
+    <tbody>
+      <tr><td style="text-align: center;">[ ]</td><td>Requirements Baseline</td><td>PRTDD approved by student and stakeholders; all 26 sections documented.</td></tr>
+      <tr><td style="text-align: center;">[ ]</td><td>Functional Completeness</td><td>All 20 Functional Requirements (FR-001 to FR-020) implemented and verified.</td></tr>
+      <tr><td style="text-align: center;">[ ]</td><td>Financial Integrity</td><td>All balances computed in integer minor units; zero float errors; pool invariant satisfied.</td></tr>
+      <tr><td style="text-align: center;">[ ]</td><td>Ledger Immutability</td><td>Zero in-place updates/deletions on financial rows; corrections via signed adjustment records.</td></tr>
+      <tr><td style="text-align: center;">[ ]</td><td>Dual-Control Payouts</td><td>Disbursements require two distinct authorized approvers; self-approval strictly rejected.</td></tr>
+      <tr><td style="text-align: center;">[ ]</td><td>Audit Log Completeness</td><td>100% of financial operations produce immutable audit rows capturing actor, timestamp, IP.</td></tr>
+      <tr><td style="text-align: center;">[ ]</td><td>Automated Testing</td><td>Unit and integration test suites pass with &gt; 80% coverage on financial modules.</td></tr>
+      <tr><td style="text-align: center;">[ ]</td><td>Security & Secrets Hygiene</td><td>Zero secrets in Git history; password hashed with Argon2id; secure HttpOnly cookies.</td></tr>
+      <tr><td style="text-align: center;">[ ]</td><td>Report Generation</td><td>CSV ledger exports and PDF member statements download with correct totals.</td></tr>
+      <tr><td style="text-align: center;">[ ]</td><td>Live Cloud Deployment</td><td>System accessible on public URL with live PostgreSQL database and SSL encryption.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- SECTION 26: GLOSSARY -->
+<div>
+  <h1>26. Glossary of Cultural and Technical Terms</h1>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 22%;">Term</th>
+        <th style="width: 78%;">Definition and Context</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Equb (ዕቁብ)</strong></td>
+        <td>Traditional Ethiopian Rotating Savings and Credit Association (ROSCA) wherein members pool periodic fixed contributions and distribute the accumulated sum to one winner per cycle.</td>
+      </tr>
+      <tr>
+        <td><strong>Sebsabi (ሰብሳቢ)</strong></td>
+        <td>The elected chairman, organizer, or administrative owner of an Equb group responsible for governance, rules, and dispute oversight.</td>
+      </tr>
+      <tr>
+        <td><strong>Genzeb Yazhi (ገንዘብ ያዥ)</strong></td>
+        <td>The trusted treasurer of the Equb group responsible for collecting member payments, maintaining the ledger, and issuing receipts.</td>
+      </tr>
+      <tr>
+        <td><strong>Wasa (ዋስ)</strong></td>
+        <td>A legal or community guarantor who pledges financial liability if a member defaults on their post-payout contribution obligations.</td>
+      </tr>
+      <tr>
+        <td><strong>Cycle (ዙር)</strong></td>
+        <td>A single scheduled operational iteration (daily, weekly, or monthly) consisting of contribution collection and one payout disbursement.</td>
+      </tr>
+      <tr>
+        <td><strong>Payout (ዕጣ)</strong></td>
+        <td>The aggregated sum of member contributions collected during a cycle and awarded to the designated beneficiary.</td>
+      </tr>
+      <tr>
+        <td><strong>Minor Units</strong></td>
+        <td>The smallest non-divisible fractional denomination of a currency (e.g. santim for Ethiopian Birr; 1 ETB = 100 santim). Stored as integers to prevent floating-point calculation errors.</td>
+      </tr>
+      <tr>
+        <td><strong>ROSCA</strong></td>
+        <td>Rotating Savings and Credit Association: an international peer-to-peer financial model recognized globally.</td>
+      </tr>
+      <tr>
+        <td><strong>Dual Control</strong></td>
+        <td>A mandatory security governance policy requiring two independent authorized individuals to sign off before a sensitive financial action can execute.</td>
+      </tr>
+      <tr>
+        <td><strong>ACID</strong></td>
+        <td>Atomicity, Consistency, Isolation, Durability: database guarantees ensuring that financial transactions are processed reliably without partial state corruption.</td>
+      </tr>
+      <tr>
+        <td><strong>RBAC</strong></td>
+        <td>Role-Based Access Control: an authorization mechanism restricting system access based on assigned user roles (Admin, Treasurer, Manager, Member).</td>
+      </tr>
+      <tr>
+        <td><strong>Argon2id</strong></td>
+        <td>The premier modern password hashing algorithm, resistant to GPU/ASIC cracking and side-channel timing attacks.</td>
+      </tr>
+      <tr>
+        <td><strong>Idempotency</strong></td>
+        <td>An API property ensuring that submitting the same request multiple times produces the identical outcome without duplicate transactions.</td>
+      </tr>
+      <tr>
+        <td><strong>Zod</strong></td>
+        <td>A TypeScript-first schema declaration and runtime data validation library.</td>
+      </tr>
+      <tr>
+        <td><strong>Prisma</strong></td>
+        <td>A next-generation Object-Relational Mapper (ORM) for Node.js and TypeScript providing type-safe database queries and automated migrations.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>

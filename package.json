@@ -1,0 +1,32 @@
+{
+  "name": "ethioequb-digital-management-system",
+  "version": "1.0.0",
+  "private": true,
+  "description": "EthioEqub Digital Management System - Rotating Savings and Credit Association Platform",
+  "workspaces": [
+    "shared",
+    "server",
+    "client"
+  ],
+  "scripts": {
+    "build:shared": "npm run build --workspace=@ethioequb/shared",
+    "dev:server": "npm run dev --workspace=server",
+    "dev:client": "npm run dev --workspace=client",
+    "build:server": "npm run build --workspace=server",
+    "build:client": "npm run build --workspace=client",
+    "build": "npm run build:shared && npm run build:server && npm run build:client",
+    "test": "npm run test --workspace=server",
+    "db:migrate": "npm run db:migrate --workspace=server",
+    "db:seed": "npm run db:seed --workspace=server"
+  },
+  "keywords": [
+    "ethioequb",
+    "equb",
+    "rosca",
+    "ethiopia",
+    "financial-management",
+    "fintech"
+  ],
+  "author": "Wagnew A.",
+  "license": "ISC"
+}
