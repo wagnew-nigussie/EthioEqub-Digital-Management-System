@@ -23,7 +23,7 @@ import {
 
 export const DashboardPage: React.FC = () => {
   const { user } = useAuth();
-  const { openReceipt } = useUI();
+  const { openReceipt, openExplainer } = useUI();
   const [groups, setGroups] = useState<any[]>([]);
   const [selectedGroupId, setSelectedGroupId] = useState<string | null>(null);
   const [summary, setSummary] = useState<any | null>(null);
@@ -150,6 +150,34 @@ export const DashboardPage: React.FC = () => {
             </Link>
           </div>
         </div>
+      </div>
+
+      {/* Friendly Round Explainer Banner for New Users */}
+      <div className="p-4 rounded-3xl bg-white border border-teal-200/90 shadow-2xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-2xl bg-teal-50 text-teal-700 flex items-center justify-center shrink-0 border border-teal-200 shadow-2xs">
+            <Sparkles className="w-5 h-5" />
+          </div>
+          <div>
+            <div className="text-xs font-bold text-slate-900 flex items-center gap-2">
+              <span>Current Round #3 Goal: Collect 40,000 ETB for Marta Bekele</span>
+              <span className="text-[10px] font-semibold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full">
+                3 of 4 Contributed
+              </span>
+            </div>
+            <p className="text-[11px] text-slate-500 mt-0.5 leading-snug">
+              Wagnew Nigussie, Tigist Haile, and Chala Tadesse have each paid their 10,000 ETB. Once Marta Bekele completes her payment, the full 40,000 ETB pool will be unlocked and disbursed to her following Dual-Control Sign-Off!
+            </p>
+          </div>
+        </div>
+
+        <button
+          onClick={openExplainer}
+          className="inline-flex items-center gap-1 text-xs font-bold text-teal-700 hover:text-teal-800 bg-teal-50 hover:bg-teal-100 px-3 py-1.5 rounded-xl border border-teal-200/80 transition shrink-0"
+        >
+          <span>How It Works (መመሪያ)</span>
+          <ArrowRight className="w-3.5 h-3.5" />
+        </button>
       </div>
 
       {/* KPI Financial Metric Cards (FR-017) */}
