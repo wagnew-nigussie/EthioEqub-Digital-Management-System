@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
+import { UIProvider } from "./context/UIContext";
 import { Layout } from "./components/common/Layout";
 import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
@@ -33,33 +34,35 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
 export const App: React.FC = () => {
   return (
     <AuthProvider>
-      <BrowserRouter>
-        <Routes>
-          {/* Public Routes */}
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
+      <UIProvider>
+        <BrowserRouter>
+          <Routes>
+            {/* Public Routes */}
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
 
-          {/* Protected Application Routes */}
-          <Route
-            element={
-              <ProtectedRoute>
-                <Layout />
-              </ProtectedRoute>
-            }
-          >
-            <Route path="/" element={<DashboardPage />} />
-            <Route path="/groups" element={<GroupsPage />} />
-            <Route path="/groups/:id" element={<GroupDetailPage />} />
-            <Route path="/contributions" element={<ContributionsPage />} />
-            <Route path="/payouts" element={<PayoutApprovalsPage />} />
-            <Route path="/reports" element={<ReportsPage />} />
-            <Route path="/audit-logs" element={<AuditLogPage />} />
-          </Route>
+            {/* Protected Application Routes */}
+            <Route
+              element={
+                <ProtectedRoute>
+                  <Layout />
+                </ProtectedRoute>
+              }
+            >
+              <Route path="/" element={<DashboardPage />} />
+              <Route path="/groups" element={<GroupsPage />} />
+              <Route path="/groups/:id" element={<GroupDetailPage />} />
+              <Route path="/contributions" element={<ContributionsPage />} />
+              <Route path="/payouts" element={<PayoutApprovalsPage />} />
+              <Route path="/reports" element={<ReportsPage />} />
+              <Route path="/audit-logs" element={<AuditLogPage />} />
+            </Route>
 
-          {/* Catch-all redirect */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </BrowserRouter>
+            {/* Catch-all redirect */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </BrowserRouter>
+      </UIProvider>
     </AuthProvider>
   );
 };
